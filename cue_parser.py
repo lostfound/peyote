@@ -17,15 +17,27 @@ class CueTrack:
         s.p = p
         s.idx = {}
         s.no = no
+        s.dur = None
         s.artist = None
         s.file = file
 
     def add_index(s, no: "int: number", pos: "float: time"):
         s.idx[no] = pos
 
+    def calc_duration(s, next_track):
+        if next_track.file == s.file:
+            try:
+                begin = s.idx[1] if 1 in s.idx else s.idx[0]
+                s.dur = next_track.idx[0] - begin
+            except Exception as e:
+                s.dur = None
+                print (e)
+
     def __str__(s):
         ret = "№ {0} {1} [{2}]".format(s.no, s.title, s.artist)
         ret += "\n  FILE: {1}/{0}".format(s.file, s.p.path)
+        if s.dur:
+            ret += "\n  duration: {0} min".format(round(s.dur/60, 2))
         ret += "\n  IDX: {0}".format(s.idx)
         return ret
 
@@ -113,6 +125,9 @@ class CueSheets:
                 track.add_index(no, time)
 
         s._append_track(track, artist, title)
+        for i in range(len(s.tracks)-1):
+            s.tracks[i].calc_duration(s.tracks[i+1])
+
 
     def _append_track(s, track: "CueTrack", artist: "performer", title: "title"):
         if track:
