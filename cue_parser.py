@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os.path
 import re
 
 _re_name_args       = re.compile("([\w]+)[\s]+(.*)")
@@ -8,6 +9,25 @@ _re_quotestrip      = re.compile('^"(.*)"$|(.*)')
 _re_file            = re.compile('^"(.*)"[\s]+([\w]+)')
 _re_track           = re.compile('^[0]*([\d]+)')
 _re_index           = re.compile('^[0]*([\d])+[\s]+[0]*([\d]+):[0]*([\d]+):[0]*([\d])')
+
+
+class CueTrack:
+    def __init__(s, p: "CueSheets: parent object", no: "int: track number", file: "filename"):
+        s.title = None
+        s.p = p
+        s.idx = {}
+        s.no = no
+        s.artist = None
+        s.file = file
+
+    def add_index(s, no: "int: number", pos: "float: time"):
+        s.idx[no] = pos
+
+    def __str__(s):
+        ret = "№ {0} {1} [{2}]".format(s.no, s.title, s.artist)
+        ret += "\n  FILE: {1}/{0}".format(s.file, s.p.path)
+        ret += "\n  IDX: {0}".format(s.idx)
+        return ret
 
 
 class CueSheets:
@@ -23,6 +43,7 @@ class CueSheets:
                 content = f.read()
                 s.codepage = "cp1251"
                 s.warnings.append("cp1251 Codepage")
+        s.path = os.path.dirname(os.path.abspath(file_path))
         s.rem = {}
         s.album = None
         s.artist= None
@@ -32,8 +53,8 @@ class CueSheets:
         track  = None
         file   = None
 
-        for line in [ x.rstrip().strip() for x in content.split('\n')]:
-            rer =_re_name_args.match(line)
+        for line in [x.rstrip().strip() for x in content.split('\n')]:
+            rer = _re_name_args.match(line)
             if not rer: continue
 
             arg_name = rer.group(1).upper()
@@ -74,7 +95,7 @@ class CueSheets:
                 else:
                     s._append_track(track, artist, title)
 
-                track = {"no": no, "file": file, "idx": {}}
+                track = CueTrack(s, no, file)
 
             elif arg_name == "INDEX":
                 if not track:
@@ -86,16 +107,17 @@ class CueSheets:
                     continue
                 no = int(rer.group(1))
                 time = 0.0
-                for g, m in zip(range(2,5), [60, 1, 1/75]):
+                for g, m in zip(range(2, 5), [60, 1, 1/75]):
                     time += m*int(rer.group(g))
 
-                track["idx"][no] = time
+                track.add_index(no, time)
+
         s._append_track(track, artist, title)
 
-    def _append_track(s, track: "Track", artist: "performer", title: "title"):
+    def _append_track(s, track: "CueTrack", artist: "performer", title: "title"):
         if track:
-            track["title"]  = title
-            track["artist"] = artist
+            track.title = title
+            track.artist = artist
             s.tracks.append(track)
 
     def __str__(s):
@@ -103,14 +125,13 @@ class CueSheets:
         ret += "\n REM: {0}".format(s.rem)
         ret += "\n TRACKS:"
         for track in s.tracks:
-            ret += "\n  {0}".format(track)
+            ret += "\n  {0}".format(str(track).replace("\n", "\n    "))
         if len(s.warnings):
             ret += "\n WARNINGS: {0}".format(s.warnings)
         return ret
 
 
 if __name__ == '__main__':
-    import os.path
     from os import listdir
     TEST_DATA_PATH = "test_data"
     for filename in listdir(TEST_DATA_PATH):
