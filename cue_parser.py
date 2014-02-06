@@ -71,11 +71,10 @@ class CueSheets:
                 if not track:  # DISC NAME
                     s.album  = title
                     s.artist = artist
-                else:  # TODO: DRY this code
-                    track["title"]  = title
-                    track["artist"] = artist
-                    s.tracks.append(track)
-                track = {"no": no, "file": file, "idx":{}}
+                else:
+                    s._append_track(track, artist, title)
+
+                track = {"no": no, "file": file, "idx": {}}
 
             elif arg_name == "INDEX":
                 if not track:
@@ -91,8 +90,10 @@ class CueSheets:
                     time += m*int(rer.group(g))
 
                 track["idx"][no] = time
+        s._append_track(track, artist, title)
 
-        if track:  # TODO: DRY this code
+    def _append_track(s, track: "Track", artist: "performer", title: "title"):
+        if track:
             track["title"]  = title
             track["artist"] = artist
             s.tracks.append(track)
