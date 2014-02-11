@@ -3,13 +3,6 @@
 import os.path
 import re
 
-_re_name_args       = re.compile("([\w]+)[\s]+(.*)")
-_re_rem             = re.compile('([A-Z]+)[\s]+("(.*)"$|(.*$))')
-_re_quotestrip      = re.compile('^"(.*)"$|(.*)')
-_re_file            = re.compile('^"(.*)"[\s]+([\w]+)')
-_re_track           = re.compile('^[0]*([\d]+)')
-_re_index           = re.compile('^[0]*([\d])+[\s]+[0]*([\d]+):[0]*([\d]+):[0]*([\d])')
-
 
 class CueTrack:
     def __init__(s, p: "CueSheets: parent object", no: "int: track number", file: "filename"):
@@ -31,7 +24,6 @@ class CueTrack:
                 s.dur = next_track.idx[0] - begin
             except Exception as e:
                 s.dur = None
-                print (e)
 
     def __str__(s):
         ret = "№ {0} {1} [{2}]".format(s.no, s.title, s.artist)
@@ -43,6 +35,12 @@ class CueTrack:
 
 
 class CueSheets:
+    __re_name_args       = re.compile("([\w]+)[\s]+(.*)")
+    __re_rem             = re.compile('([A-Z]+)[\s]+("(.*)"$|(.*$))')
+    __re_quotestrip      = re.compile('^"(.*)"$|(.*)')
+    __re_file            = re.compile('^"(.*)"[\s]+([\w]+)')
+    __re_track           = re.compile('^[0]*([\d]+)')
+    __re_index           = re.compile('^[0]*([\d])+[\s]+[0]*([\d]+):[0]*([\d]+):[0]*([\d])')
 
     def __init__(s, file_path: "A cue path"):
         s.warnings = []
@@ -66,19 +64,19 @@ class CueSheets:
         file   = None
 
         for line in [x.rstrip().strip() for x in content.split('\n')]:
-            rer = _re_name_args.match(line)
+            rer = s.__class__.__re_name_args.match(line)
             if not rer: continue
 
             arg_name = rer.group(1).upper()
             arg_value = rer.group(2)
             if arg_name == "REM":
-                rer = _re_rem.match(arg_value)
+                rer = s.__class__.__re_rem.match(arg_value)
                 if not rer:
                     continue
                 s.rem[rer.group(1)] = rer.group(3) if rer.group(3) else rer.group(4)
 
             elif arg_name in ["PERFORMER", "TITLE"]:
-                rer = _re_quotestrip.match(arg_value)
+                rer = s.__class__.__re_quotestrip.match(arg_value)
                 if not rer:
                     s.warnings.append("invalid performer")
                     continue
@@ -89,14 +87,14 @@ class CueSheets:
                     title = value
 
             elif arg_name == "FILE":
-                rer = _re_file.match(arg_value)
+                rer = s.__class__.__re_file.match(arg_value)
                 if not rer:
                     s.warnings.append("invalid file")
                     continue
                 file = rer.group(1)
 
             elif arg_name == "TRACK":
-                rer = _re_track.match(arg_value)
+                rer = s.__class__.__re_track.match(arg_value)
                 if not rer:
                     s.warnings.append("invalid TRACK!!!")
                     continue
@@ -113,7 +111,7 @@ class CueSheets:
                 if not track:
                     s.warnings.append("index before TRACK")
                     continue
-                rer = _re_index.match(arg_value)
+                rer = s.__class__.__re_index.match(arg_value)
                 if not rer:
                     s.warnings.append("Invalid index")
                     continue
@@ -149,6 +147,6 @@ class CueSheets:
 if __name__ == '__main__':
     from os import listdir
     TEST_DATA_PATH = "test_data"
-    for filename in listdir(TEST_DATA_PATH):
+    for filename in filter(lambda x: x.endswith(".cue"), listdir(TEST_DATA_PATH)):
         cue = CueSheets(os.path.join(TEST_DATA_PATH, "{0}".format(filename)))
         print (cue)
