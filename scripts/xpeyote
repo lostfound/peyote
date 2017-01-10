@@ -1,0 +1,6 @@
+#!/bin/sh
+PEYOTE_BIN="/usr/bin/peyote $*"
+TERMX=""
+test -f ~/.config/peyote/terminal.conf && . ~/.config/peyote/terminal.conf
+test -z "$TERMX" && TERMX="urxvt +sb -sh 30 -fadecolor gray -fade 5 -tint gray -tr -fg white -fn xft:monospace:size=10 -geometry 100x42 -e ${PEYOTE_BIN}"
+$TERMX

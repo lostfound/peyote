@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=0.9.11
+Exec=/usr/bin/xpeyote
+Name=Peyote
+Comment=An audio player
+Name[ru]=Peyote
+Comment[ru]=Аудио плеер
+Icon=peyote
+Terminal=false
+Type=Application
+Categories=AudioVideo;Player;

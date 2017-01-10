@@ -1,0 +1,951 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-30 15:24+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: panel_engine.py:298 panel_engine.py:302 panel_engine.py:315
+#: panel_engine.py:363 panel_engine.py:369 panel_engine.py:984
+#: panel_engine.py:1003 panel_engine.py:1007 panel_engine.py:1072
+#: panel_engine.py:1079 panel_engine.py:1083 panel_engine.py:1104
+#: panel_engine.py:1112 panel_engine.py:1116
+msgid " error "
+msgstr " ошибочка "
+
+#: panel_engine.py:298 panel_engine.py:302 panel_engine.py:315
+msgid "Can't delete file:"
+msgstr "Файлик не удаляется"
+
+#: panel_engine.py:299 panel_engine.py:303 panel_engine.py:316
+#: panel_engine.py:364 panel_engine.py:370 panel_engine.py:412
+#: panel_engine.py:457 panel_engine.py:499 panel_engine.py:537
+#: panel_engine.py:581 panel_engine.py:615
+msgid "<Abort>"
+msgstr "<Прервать>"
+
+#: panel_engine.py:299 panel_engine.py:303 panel_engine.py:316
+#: panel_engine.py:364 panel_engine.py:370 panel_engine.py:412
+#: panel_engine.py:457 panel_engine.py:499 panel_engine.py:537
+msgid "<Retry>"
+msgstr "<Повторить>"
+
+#: panel_engine.py:299 panel_engine.py:303 panel_engine.py:412
+#: panel_engine.py:457 panel_engine.py:499 panel_engine.py:537
+msgid "<Skip"
+msgstr "<Пропустить"
+
+#: panel_engine.py:299 panel_engine.py:303 panel_engine.py:412
+#: panel_engine.py:457 panel_engine.py:499 panel_engine.py:537
+msgid "All>"
+msgstr "всё>"
+
+#: panel_engine.py:299
+msgid "<chmod"
+msgstr "<chmod"
+
+#: panel_engine.py:316 panel_engine.py:364 panel_engine.py:370
+#: panel_engine.py:581 panel_engine.py:615
+msgid "<Skip>"
+msgstr "<Пропустить>"
+
+#: panel_engine.py:363 panel_engine.py:369
+msgid "Can't create target directory"
+msgstr "Не создаётся директория"
+
+#: panel_engine.py:411
+msgid " File exists "
+msgstr " Файлик уже есть "
+
+#: panel_engine.py:411
+msgid "Target file already exists!"
+msgstr "Уже есть такой файлик!"
+
+#: panel_engine.py:412
+msgid "<Overwrite"
+msgstr "<Переписать"
+
+#: panel_engine.py:456
+msgid " symlink error "
+msgstr " ошибочка "
+
+#: panel_engine.py:456
+msgid "Unable to create symlink"
+msgstr "Symlink не создаётся"
+
+#: panel_engine.py:498 panel_engine.py:536
+msgid " file open error "
+msgstr " ошибочка "
+
+#: panel_engine.py:498
+msgid "Can't open source file:"
+msgstr "Файлик не хочет открываеться"
+
+#: panel_engine.py:536
+msgid "Can't open destination file"
+msgstr "Файлик не хочет создаваться"
+
+msgid " file read error "
+msgstr " ошибочка "
+
+msgid "Can't read source file:"
+msgstr "Файлик не читается ;("
+
+msgid " file write error "
+msgstr " ошибочка "
+
+msgid "Can't write destination file:"
+msgstr "Файлик не пишется"
+
+msgid "<Repeat>"
+msgstr "<Повторить>"
+
+msgid " Copy "
+msgstr " копирование "
+
+msgid "Generating tree"
+msgstr "Генерируется деревце"
+
+msgid "Copy"
+msgstr " копирование "
+
+msgid "Files"
+msgstr "файликов"
+
+msgid "copying "
+msgstr "копируется "
+
+msgid "moving"
+msgstr "перемещается "
+
+
+msgid " Move "
+msgstr " перемещение "
+
+
+msgid "Delete"
+msgstr " удаление "
+
+msgid "removing "
+msgstr "удаляется "
+
+#: panel_engine.py:984 panel_engine.py:1003 panel_engine.py:1007
+#: panel_engine.py:1072 panel_engine.py:1079 panel_engine.py:1083
+#: panel_engine.py:1104 panel_engine.py:1112 panel_engine.py:1116
+msgid "<Let It Be>"
+msgstr "<Против кармы не попрёшь>"
+
+#: panel_engine.py:1007
+msgid "can't rename"
+msgstr "Не переименовывается"
+
+#: panel_engine.py:1072
+msgid "File exists"
+msgstr "Файлик-то есть уже"
+
+#: panel_engine.py:1083
+msgid "Can't create a Directory"
+msgstr "Папочка не делается"
+
+#: panel_engine.py:1104
+msgid "File exists."
+msgstr "Файлик-то есть уже."
+
+#: panel_engine.py:1116
+msgid "Can't create a playlist"
+msgstr "Плейлистик не делается"
+
+#: panel_engine.py:1234
+msgid " move "
+msgstr " перемещение "
+
+#: panel_engine.py:1234
+msgid "Move files and directories to"
+msgstr "Перемещаются файлы и папочки в"
+
+#: panel_engine.py:1234 panel_engine.py:1265 panel_engine.py:1326
+msgid "<Yes>"
+msgstr "<Ага>"
+
+#: panel_engine.py:1234 panel_engine.py:1265 panel_engine.py:1326
+msgid "<No>"
+msgstr "<Неа>"
+
+#: panel_engine.py:1265
+msgid " delete "
+msgstr " удаление "
+
+#: panel_engine.py:1265
+msgid "Delete "
+msgstr "Удалить "
+
+#: panel_engine.py:1265
+msgid "files and directories?"
+msgstr "файлики и папочки?"
+
+#: panel_engine.py:1265
+msgid "<Random>"
+msgstr "<Пусть судьба решит>"
+
+#: panel_engine.py:1270
+msgid " Create a new Directory "
+msgstr " Новенькая папочка"
+
+#: panel_engine.py:1270
+msgid "Please, Enter Directory Name:"
+msgstr "Введи имя директории:"
+
+#: panel_engine.py:1270 panel_engine.py:1276
+msgid "<Okey>"
+msgstr "<Готово>"
+
+#: panel_engine.py:1270 panel_engine.py:1276 panel_engine.py:1326
+msgid "<Cancel>"
+msgstr "<Отменить>"
+
+#: panel_engine.py:1276
+msgid " Create a new Playlist "
+msgstr " Новенький плейлисточек "
+
+#: panel_engine.py:1276
+msgid "Please, Enter playlist name:"
+msgstr "Введи имя плейлисточка"
+
+#: panel_engine.py:1326
+msgid " quit "
+msgstr " выход из плейлиста "
+
+#: panel_engine.py:1326
+msgid "Playlist was modified,"
+msgstr "Плейлисточек был изменён,"
+
+#: panel_engine.py:1326
+msgid "save with exit?"
+msgstr "хотите сохранить его перед выходом?"
+
+#: panel_engine.py:1772
+msgid " New "
+msgstr " создать "
+
+#: panel_engine.py:1772
+msgid "What you want to create?"
+msgstr "Смертный, что ты хочешь создать?"
+
+#: panel_engine.py:1772
+msgid "<Directory>"
+msgstr "<Папочку>"
+
+#: panel_engine.py:1772
+msgid "<Playlist>"
+msgstr "<Плейлист>"
+
+#: panel_engine.py:1772
+msgid "<Nothing>"
+msgstr "<Ничего>"
+
+msgid " open the playlist "
+msgstr " открытие плейлиста "
+
+msgid "Playlist is being opened"
+msgstr "Открывается плейлист."
+
+msgid " add "
+msgstr " добавление "
+
+msgid "Songs are being added"
+msgstr "Песенки добавляются"
+
+msgid "Tracks"
+msgstr "Треков"
+
+msgid "<Search>"
+msgstr "<Поиск>"
+
+msgid " Search "
+msgstr " Поиск "
+
+msgid "Title:"
+msgstr "Название:"
+
+msgid "Artist:"
+msgstr "Исполнитель:"
+
+msgid "Album:"
+msgstr "Альбом:"
+
+msgid " Directory Scanning "
+msgstr " Сканирование папочек "
+
+msgid "Directories"
+msgstr "Папочек "
+
+msgid "Press ENTER key to abort"
+msgstr " Enter - прервать "
+
+msgid " Command execution "
+msgstr "Запуск комманды"
+
+msgid "<Run>"
+msgstr "<Запустить>"
+
+msgid "<Background>"
+msgstr "<В фоне>"
+
+msgid "Please enter a command"
+msgstr "Введите комманду"
+
+msgid "Unable to execute the command!"
+msgstr "Не получается выполнить комманду"
+
+msgid "Waiting for the program to finish."
+msgstr "Ожидание завершения программы."
+
+msgid "Peyote was crashed!"
+msgstr "Peyote грохнулся :("
+
+msgid "Please send this file '"
+msgstr "Сделай полезное дело, отошли этот файл - '"
+
+msgid "' to me 'platonny@ngs.ru'"
+msgstr "' на мой почтовый ящик 'platonny@ngs.ru'"
+
+msgid "Your terminal must display these unicode symbols - "
+msgstr "Терминал должен отображать эти символы - "
+
+msgid "select color scheme ["
+msgstr "выбор цветовой схемы ["
+
+msgid "       is an audio player with friendly MC-like interface."
+msgstr "       это аудио плеер с MC-подобным пользовательским интерфейсом."
+
+msgid "       free software (GPL) without any warranty but with best wishes"
+msgstr "       это свободное програмное обеспечение и тп и тп ля ля ля, бла бла бла"
+
+msgid "       website:"
+msgstr "       вебсайт:"
+
+
+msgid "secondary character encoding  (!= utf-8) ["
+msgstr "вторичная кодировка (!= utf-8) ["
+
+msgid "audio output gstreamer plug-in ["
+msgstr "гыгыстримерский выводногй плагин ["
+
+msgid "print this message and exit"
+msgstr "вывести эту мессагу и выйти"
+
+msgid "supported options:"
+msgstr "поддерживаемые опции:"
+
+msgid "supported locations:"
+msgstr "поддерживаемые локации:"
+
+msgid "Press enter to continue."
+msgstr "Нажми ентер для продолжения."
+
+msgid "save"
+msgstr "сохранить"
+
+msgid "copy"
+msgstr "копировать"
+
+msgid "move"
+msgstr "переместить"
+
+msgid "new"
+msgstr "создать"
+
+msgid "delete"
+msgstr "убрать"
+
+msgid "rename"
+msgstr "переназвать"
+
+msgid "tabs"
+msgstr "табы"
+
+msgid "mode"
+msgstr "режим"
+
+msgid "search"
+msgstr "поиск"
+
+msgid "go to"
+msgstr "идти к"
+
+msgid "cd"
+msgstr "перейти"
+
+msgid "tag"
+msgstr "пометить"
+
+msgid "border"
+msgstr "поребрик"
+
+msgid "size"
+msgstr "размер"
+
+msgid "execute"
+msgstr "запустить"
+
+msgid "quit"
+msgstr "выход"
+
+msgid "add"
+msgstr "добавить"
+
+msgid "append"
+msgstr "докинуть"
+
+msgid "remove"
+msgstr "удалить"
+
+msgid "new panel"
+msgstr "новая панель"
+
+msgid "close panel"
+msgstr "закрыть панель"
+
+msgid "redraw"
+msgstr "перерисовать"
+
+msgid "add song"
+msgstr "добавить песню"
+
+msgid "quick search"
+msgstr "Быстрый поиск"
+
+msgid "show files"
+msgstr "показать файлы"
+
+msgid "Home"
+msgstr "Кроличья нора"
+
+msgid "Equalizer"
+msgstr "Эквалайзер"
+
+msgid "Please, wait ..."
+msgstr "Подожди - а лучше в окошко смотри!"
+
+msgid " Getting lyrics "
+msgstr "Получение текста песенки"
+
+msgid "Lyrics"
+msgstr "Текст Песенки"
+
+msgid " Add a new Location "
+msgstr " Добавить Локацию "
+
+msgid "Location Name:"
+msgstr "Имя для локации:"
+
+msgid "Location Path:"
+msgstr "Путь:"
+
+msgid " Rename a Location "
+msgstr " Переназвать Локацию "
+
+msgid "secondary charset encoding"
+msgstr "вторичная кодировка"
+
+msgid "audio extensions"
+msgstr "расширенья аудио файлов"
+
+msgid "song title formats"
+msgstr "режимы отображенья песенок"
+
+msgid "playlist"
+msgstr "плейлист"
+
+msgid "default playlist"
+msgstr "дефолтный плейлист"
+
+msgid "audio player"
+msgstr "аудио плеер"
+
+msgid "file system"
+msgstr "файловая система"
+
+msgid "Config"
+msgstr "Конфигурация"
+
+msgid "[new]"
+msgstr "[новое]"
+
+msgid "gst audio filters"
+msgstr "аудио карёжики"
+
+msgid "gst audio sink"
+msgstr "аудио выход [gst]"
+
+msgid "[ add property ]"
+msgstr "добавить настроичку"
+
+msgid "enabled"
+msgstr "используется"
+
+msgid "disabled"
+msgstr "отдыхает"
+
+msgid "crossfade effect"
+msgstr "плавный переход"
+
+msgid "time"
+msgstr "времяшко"
+
+msgid "prefered applications"
+msgstr "предпочтительные приложения"
+
+msgid "[ add extension ]"
+msgstr "[ добавить расширенье ]"
+
+msgid "[Restart audio player]"
+msgstr "[Перезапустить аудио плеер]"
+
+msgid "terminal"
+msgstr "терминал"
+
+msgid "tree"
+msgstr "деревцо"
+
+msgid "volume"
+msgstr "громкость"
+
+msgid " save playlist as "
+msgstr "сохранить плейлист как"
+
+msgid "<Save>"
+msgstr "<Сохранить>"
+
+msgid "<Relative paths>"
+msgstr "<Относительные пути>"
+
+msgid "Playlist Path"
+msgstr "Путь к плейлисту"
+
+msgid "next ♫"
+msgstr "следующая ♫"
+
+msgid "background"
+msgstr "фон"
+
+
+msgid "transparent"
+msgstr "прозрачный"
+
+msgid "black"
+msgstr "чёрный"
+
+msgid "red"
+msgstr "красный"
+
+msgid "green"
+msgstr "цвет ганжы"
+
+msgid "yellow"
+msgstr "жёлтенкий"
+
+msgid "blue"
+msgstr "синий"
+
+msgid "magenta"
+msgstr "пурпурный"
+
+msgid "cyan"
+msgstr "голубой"
+
+msgid "white"
+msgstr "белый"
+
+msgid "panel"
+msgstr "панелька"
+
+msgid "pop-up window"
+msgstr "всплывающее окошко"
+
+msgid "player"
+msgstr "плеер"
+
+msgid "key bar"
+msgstr "кнопкапанель"
+
+msgid "active header"
+msgstr "активный заголовок"
+
+msgid "passive header"
+msgstr "пассивный заголовок"
+
+msgid "cursor"
+msgstr "курсорчик"
+
+msgid "pointer"
+msgstr "указыватель"
+
+msgid "pointer & cursor"
+msgstr "указыватель и курсорчик"
+
+msgid "tagged item"
+msgstr "помеченая штука"
+
+msgid "directory"
+msgstr "папка"
+
+msgid "song1"
+msgstr "песенка 1"
+
+msgid "song2"
+msgstr "песенка 2"
+
+msgid "song3"
+msgstr "песенка 3"
+
+msgid "song1(c2)"
+msgstr "песенка 1(c2)"
+
+msgid "song2(c2)"
+msgstr "песенка 2(c2)"
+
+msgid "song3(c2)"
+msgstr "песенка 3(c2)"
+
+msgid "file"
+msgstr "файлик"
+
+msgid "location1"
+msgstr "закладка 1"
+
+msgid "location2"
+msgstr "закладка 2"
+
+msgid "lyrics"
+msgstr "текст песенки"
+
+msgid "inputbox"
+msgstr "поле ввода"
+
+msgid "inputbox cursor"
+msgstr "курсор для поля ввода"
+
+msgid "active button"
+msgstr "активная кнопочка"
+
+msgid "scrollbar"
+msgstr "скроллбар"
+
+msgid "scrollbar cursor"
+msgstr "ползунок скроллбара"
+
+msgid "equalizer tag1"
+msgstr "тэг1 экволайзере"
+
+msgid "equalizer tag2"
+msgstr "тэг2 экволайзере"
+
+msgid "progress"
+msgstr "прогресс"
+
+msgid "body"
+msgstr "тело"
+
+msgid "name"
+msgstr "имя"
+
+msgid "key"
+msgstr "кнопка"
+
+msgid "foreground"
+msgstr "буковки"
+
+msgid "bold"
+msgstr "жирно"
+
+msgid "colors"
+msgstr "раскраска"
+
+msgid " save equalizer "
+msgstr " сохраненье экволайзера "
+
+msgid "<Default>"
+msgstr "<По молчанью>"
+
+msgid "<Artist>"
+msgstr "<исполнитель>"
+
+msgid "<Album>"
+msgstr "<Альбомчик>"
+
+msgid "<Song>"
+msgstr "<Песенка>"
+
+msgid "Select a target"
+msgstr "Выберите цель"
+
+msgid "show/hide tags"
+msgstr "показать/скрыть тэги"
+
+msgid "bands"
+msgstr "полосочки"
+
+msgid "encoders"
+msgstr "конвертялки"
+
+msgid "profile name"
+msgstr "имя профиля"
+
+msgid "tag type"
+msgstr "тип тэга"
+
+msgid "destination"
+msgstr "цель"
+
+msgid "gst encoder"
+msgstr "энкодер"
+
+msgid "gst muxer"
+msgstr "муксер"
+
+msgid "[ add encoder ]"
+msgstr "[ добавить энкодер ]"
+
+msgid "properties"
+msgstr "настроички"
+
+msgid "gst mixer"
+msgstr "миксер"
+
+msgid "appearance"
+msgstr "прикид"
+
+msgid "icons"
+msgstr "иконки"
+
+msgid "using"
+msgstr "примененье"
+
+msgid "artists"
+msgstr "исполнители"
+
+msgid "albums"
+msgstr "альбомчики"
+
+msgid "equalizer"
+msgstr "экволайзер"
+
+msgid "playing bar"
+msgstr "проигрыванье песенки"
+
+msgid "audio cursors"
+msgstr "аудио курсорчики"
+
+msgid "song status"
+msgstr "статус песенки"
+
+msgid "reset to defaults"
+msgstr "перекрыло - хочу чтоб попустило"
+
+msgid "Can't initialize encoder!"
+msgstr "Не инициализируеца энкодер."
+
+msgid "iso8859-1 charset detection"
+msgstr "определение iso8859-1 кодировки"
+
+msgid "It is useful for Russian users"
+msgstr "лучше включить"
+
+msgid "remove a disc number from an album name"
+msgstr "вырезать номер диска из названия альбома"
+
+msgid "palette"
+msgstr "палитра"
+
+msgid "friendship bracelet"
+msgstr "фенечка"
+
+msgid "config"
+msgstr "конфигурация"
+
+msgid "sort"
+msgstr "порядочить"
+
+msgid "shuffle"
+msgstr "перемешать"
+
+msgid "value must be between 0 and 1000"
+msgstr "значение должно быть от 0 до 1000"
+
+msgid " Select "
+msgstr " Пометить "
+
+msgid "<Select>"
+msgstr "<Пометить>"
+
+msgid "This terminal can't change color"
+msgstr "Этот терминал не позволяет менять цвета"
+
+msgid "dice"
+msgstr "дайс"
+
+msgid "equalizer holding"
+msgstr "режим экволайзера"
+
+msgid "repeat"
+msgstr "повтор"
+
+msgid "direction"
+msgstr "направление"
+
+msgid "keybar navigation"
+msgstr "навигация по кнопкапанельке"
+
+msgid "progress bar"
+msgstr "прогрессбар"
+
+msgid "hide keybar"
+msgstr "прятать кнопкапанель"
+
+msgid "scroll bar"
+msgstr "скроллбар"
+
+msgid "cursed song"
+msgstr "проклятый трэк"
+
+msgid "playing song description"
+msgstr "описание исполняемой песенки"
+
+msgid "left"
+msgstr "лево"
+
+msgid "right"
+msgstr "право"
+
+msgid "bottom"
+msgstr "внизу"
+
+msgid "current skin"
+msgstr "сейчашный скин"
+
+msgid "(un)curse"
+msgstr "накаркать"
+
+msgid "Radio"
+msgstr "Рэдио"
+
+msgid " wget list of stations "
+msgstr " загрузка списка станций "
+
+msgid " wget genres "
+msgstr " загрузка жанров "
+
+msgid "Search"
+msgstr "Искать грибы в траве"
+
+msgid "Wait for a minute"
+msgstr "Любишь музычку - люби и залипнуть"
+
+msgid "number of results"
+msgstr "число результатов"
+
+msgid "sort by"
+msgstr "забивать по"
+
+msgid "bitrate"
+msgstr "битрейту"
+
+msgid "popularity"
+msgstr "популярности"
+
+msgid "show more"
+msgstr "добавки !"
+
+msgid "command"
+msgstr "выполняшка"
+
+msgid "notifications"
+msgstr "уведомляшки"
+
+msgid "login"
+msgstr "логин"
+
+msgid "password"
+msgstr "пароль"
+
+msgid "none"
+msgstr "фигушки"
+
+msgid "opening"
+msgstr "открыванье"
+
+msgid "saving"
+msgstr "сохраненье"
+
+msgid "Check http links"
+msgstr "Проверять http ссылки"
+
+msgid "Reload files"
+msgstr "Перечитывать файлы"
+
+msgid "VLC compatibility"
+msgstr "совместимость c VLC"
+
+msgid "Audacious compatibility"
+msgstr "совместимость c Audacious"
+
+msgid "QMMP compatibility"
+msgstr "совместимость с QMMP"
+
+msgid "XSPF playlist"
+msgstr "XSPF Плейлист"
+
+msgid "conflict with VLC & Audacious"
+msgstr "Конфликтует с VLC & Audacious"
+
+msgid "crossfade"
+msgstr "плавный переход"
+
+msgid "chronology"
+msgstr "хронология"
+
+msgid "edit"
+msgstr "править"
+
+msgid "<Append>"
+msgstr "<Добавить>"
+
+msgid "auto hide unselected panel"
+msgstr "автопрятать второстепенную панель"
+
+msgid "hide it when width less then"
+msgstr "прятать панель, когда толстота меньше"
+
+msgid "hint: press DEL to reset to default"
+msgstr "нажми DEL и будет дефолт"
+
+msgid "clone"
+msgstr "клонировать"
+
+msgid "hint: press DEL to delete the skin"
+msgstr "нажми DEL для удаленья скинчика"
+
+msgid " Search on vk.com "
+msgstr " Искать [в] палеве "
+
+msgid "<Accurate"
+msgstr "<Точный"
+
+msgid "Search>"
+msgstr "Поиск>"
+
+msgid "vk.com"
+msgstr "[В] палеве"
+

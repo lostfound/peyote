@@ -1,0 +1,168 @@
+******** ABOUT
+
+Peyote is an audio player with friendly MC-like interface.
+Peyote is designed specifically for work easy with cue sheets.
+Peyote supports wv ( wavepack ), wav, flac, ape, ogg and mp3 formats.
+
+features:
+  * wv, wav, flac, ape, ogg, mp3, m4a, mp3, vma formats
+  * ID3v2, APEv2, FLAC, Vorbis tags support
+  * multiple playlists
+  * tabs
+  * cuesheet support with wrong file extensions
+  * charset detection (utf8/cp1251[or other]) for tags, .m3u, .cue
+  * httpfs
+  * mp3 encoder
+  * FS-operations such as "copy", "rename", "remove", "move"
+  * 33-band equalizer
+  * last.fm
+  * xspf playlist
+  * shoutcast, icecast
+  * Fast and light-weight
+  * Mouse support
+
+Website:
+  http://peyote.sourceforge.net
+
+******** LICENSE
+
+GNU GENERAL PUBLIC LICENSE v3.
+See ./COPYING for more details.
+
+******** DEPENDENCIES
+
+Python >= 2.6 < 3
+Mutagen is a Python module to handle audio metadata.
+PyGST is a GStreamer Python Bindings
+PyGobject is a Gobject Python Bindings
+Pyinotify is a Python package used for monitoring filesystems events
+Terminal must display these unicode symbols: ☮, ☸, ♺, ⚮, ⚅, ⚯, ☰ , ♍, ☯, ♫, ⚐, ☐, ☒
+
+********* INSTALLATION
+
+  Type './configure && make && sudo make install' to install the peyote.
+
+
+******** KEYBOARD CONTROL
+
+ PLAYER
+	0          - increase volume
+	9          - decrease volume
+	8          - increase pitch
+	7          - decrease pitch
+	4          - increase crossfade time[new]
+	3          - decrease crossfade time[new]
+	s          - random
+	r          - repeat
+	x          - play songs backward/forwards
+	space      - play/pause
+	shift +
+	left/right - seek backward/forward 10 seconds
+	n          - next
+	w          - redraw
+	q          - save the current session and exit
+	ctrl+c     - exit
+  PANEL
+	tab       - change the current panel
+	>
+	<         - next/prev tab
+	up/down   - move the selection bar
+	home/end  - move the selection bar to the first/last entry
+	page up
+	page down - move the selection bar one page up/down
+	insert    - tag/untag the entry
+	*         - tag/untag all entries
+	-         - untag all tagged entries
+	i/I       - move the selection bar to next/prev tagged entry [new]
+	shift +
+	up/down   - move the currently selected entry or the tagged entries
+	c         - change the location in the current panel
+	       You able to enter 'equaliser://'
+	1
+	2         - increase/decrease the panel width
+	t         - create a new panel
+	y         - close the current panel
+	backspace - go to the next or the current song
+	/         - quick search
+	.         - realign the cursor at center, top or bottom of the panel
+	p         - display only one panel or back to the two panels
+	~         - move the selection bar to random entry
+  FS
+	enter
+	right - open (play) the the currently selected directory or
+	 playlist(song)
+	left  - go to the parent directory
+	del
+	F8    - delete the currently selected entry or the tagged entries
+	F9    - rename the currently selected file or the tagged entries
+	F7    - create a playlist or a directory
+	F4/F5 - copy(add) the entry or tagged entries to the (selected opened
+	 folder in ) currently unselected panel
+	F6    - move the entry or tagged entries to the currently unselected panel
+	F3    - mp3encode the song or tagged songs to the unselected panel
+	!     - execute a shell command
+	?     - search a song
+	d     - calculate a size of the tagged directories
+	f     - show/hide the ordinary files
+	m     - switch the displaying mode
+	u     - mark the current song or the tagged songs played
+	U     - mark the current song or the tagged songs played
+	_     - mark all played songs
+	\     - enter in the tree mode ( leave the tree mode)
+	+     - tab group of songs
+	k     - curse the currently selected song.
+	K     - uncurse the currently selected song.
+  PLAYLIST
+	m     - switch the displaying mode
+	rigth - set a next song
+	enter - play the currently selected song
+	left  - go to the parent directory
+	del
+	F8    - delete the currently selected song or the tagged songs
+	F4    - edit path of song in the playlist [new]
+	F2    - save the playlist
+	u     - mark the current song or the tagged songs unplayed
+	U     - mark the current song or the tagged songs played
+	_     - mark all played songs
+	f7    - add a song url to the playlist.
+	+     - tab group of songs
+	]     - sort the playlist
+	}     - shuffle the playlist
+	{     - sort the playlist in chronological order [new]
+	k     - curse the currently selected song.
+	K     - uncurse the currently selected song.
+  equalizer://
+	  F2	- save
+
+  locations://
+  	  F7		- Add new location 
+	  del, F8	- Delete the current location or tagged locations
+	  F9		- Rename the current location
+  config://
+  	  del, F8	- Delete
+
+******** MOUSE CONTROL
+	mouse 
+	button         element  	behavior
+
+	*********************** Panel **********************
+	left           entry            select the entry
+	right          entry            mark(unmark) the entry
+	double         song             immediately play the song
+	double         directory        open the directory
+	double         playlist         open the playlist
+	left           header           open directory
+	left           ☐/☒              mark as (un)played
+	*********************** Player **********************
+	left           ♺,⚅              toggle the shuffle play order
+	left           ☐,☒              toggle the repeat play order
+	left           ↑,↓		playing backward/forwards
+	left           other space      pause/resume playing
+	********************* Equalizer *********************
+	left           ▨/□              set EQ-gain
+	*********************** Key Bar *********************
+	left           ☚/☛              scrolling
+	left           ☝,☟              change the key bar
+	left           Key              press key
+	left           button           press button
+

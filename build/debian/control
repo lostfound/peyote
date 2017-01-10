@@ -1,0 +1,16 @@
+Source: peyote
+Section: Multimedia
+Priority: extra
+Maintainer: Platon Peacelove <platonny@ngs.ru>
+Build-Depends: debhelper (>= 7.0.50~), autotools-dev
+Standards-Version: 3.8.4
+Homepage: http://peyote.sourceforge.net/
+#Vcs-Git: git://git.debian.org/collab-maint/peyote.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/peyote.git;a=summary
+
+Package: peyote
+Architecture: any
+Depends: python, python-gobject, python-mutagen, python-gst0.10, gstreamer0.10-plugins-base, gstreamer0.10-plugins-good, python-dbus, python-pyinotify, rxvt-unicode
+Description: Peyote is an audio player with friendly MC-like interface.
+ Peyote is designed specifically for work easy with cue sheets.
+ Peyote supports wv ( wavepack ), wav, flac, ape, ogg, wma and mp3 formats.

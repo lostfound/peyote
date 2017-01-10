@@ -1,0 +1,885 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Miś Uszatek <adres.email@ymail.com>, 2012
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: peyote\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-30 15:24+0700\n"
+"PO-Revision-Date: 2012-07-18 21:18+0100\n"
+"Last-Translator: Miś Uszatek  <adres.email@ymail.com>\n"
+"Language-Team: Polish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: panel_engine.py:298
+#: panel_engine.py:302
+#: panel_engine.py:315
+#: panel_engine.py:363
+#: panel_engine.py:369
+#: panel_engine.py:984
+#: panel_engine.py:1003
+#: panel_engine.py:1007
+#: panel_engine.py:1072
+#: panel_engine.py:1079
+#: panel_engine.py:1083
+#: panel_engine.py:1104
+#: panel_engine.py:1112
+#: panel_engine.py:1116
+msgid " error "
+msgstr " błąd"
+
+#: panel_engine.py:298
+#: panel_engine.py:302
+#: panel_engine.py:315
+msgid "Can't delete file:"
+msgstr "Nie można usunąć pliku:"
+
+#: panel_engine.py:299
+#: panel_engine.py:303
+#: panel_engine.py:316
+#: panel_engine.py:364
+#: panel_engine.py:370
+#: panel_engine.py:412
+#: panel_engine.py:457
+#: panel_engine.py:499
+#: panel_engine.py:537
+#: panel_engine.py:581
+#: panel_engine.py:615
+msgid "<Abort>"
+msgstr "<Przerwij>"
+
+#: panel_engine.py:299
+#: panel_engine.py:303
+#: panel_engine.py:316
+#: panel_engine.py:364
+#: panel_engine.py:370
+#: panel_engine.py:412
+#: panel_engine.py:457
+#: panel_engine.py:499
+#: panel_engine.py:537
+msgid "<Retry>"
+msgstr "<Ponów>"
+
+#: panel_engine.py:299
+#: panel_engine.py:303
+#: panel_engine.py:412
+#: panel_engine.py:457
+#: panel_engine.py:499
+#: panel_engine.py:537
+msgid "<Skip"
+msgstr "<Pomiń"
+
+#: panel_engine.py:299
+#: panel_engine.py:303
+#: panel_engine.py:412
+#: panel_engine.py:457
+#: panel_engine.py:499
+#: panel_engine.py:537
+msgid "All>"
+msgstr "Wszystko>"
+
+#: panel_engine.py:299
+msgid "<chmod"
+msgstr "<chmod"
+
+#: panel_engine.py:316
+#: panel_engine.py:364
+#: panel_engine.py:370
+#: panel_engine.py:581
+#: panel_engine.py:615
+msgid "<Skip>"
+msgstr "<Pomiń>"
+
+#: panel_engine.py:363
+#: panel_engine.py:369
+msgid "Can't create target directory"
+msgstr "Nie można utworzyć katalogu docelowego"
+
+#: panel_engine.py:411
+msgid " File exists "
+msgstr " Plik istnieje"
+
+#: panel_engine.py:411
+msgid "Target file already exists!"
+msgstr "Plik docelowy już istnieje!"
+
+#: panel_engine.py:412
+msgid "<Overwrite"
+msgstr "<Zastąp"
+
+#: panel_engine.py:456
+msgid " symlink error "
+msgstr " błąd dowiązania"
+
+#: panel_engine.py:456
+msgid "Unable to create symlink"
+msgstr "Nie można utworzyć dowiązania"
+
+#: panel_engine.py:498
+#: panel_engine.py:536
+msgid " file open error "
+msgstr " błąd otwarcia pliku"
+
+#: panel_engine.py:498
+msgid "Can't open source file:"
+msgstr "Nie można otworzyć pliku źródłowego:"
+
+#: panel_engine.py:536
+msgid "Can't open destination file"
+msgstr "Nie można otworzyć pliku docelowego"
+
+msgid " file read error "
+msgstr " błąd odczytu pliku"
+
+msgid "Can't read source file:"
+msgstr "Nie można odczytać pliku źródłowego:"
+
+msgid " file write error "
+msgstr " błąd zapisu pliku"
+
+msgid "Can't write destination file:"
+msgstr "Nie można zapisać pliku docelowego:"
+
+msgid "<Repeat>"
+msgstr "<Powtórz>"
+
+msgid " Copy "
+msgstr " Skopiuj"
+
+msgid "Generating tree"
+msgstr "Generowanie drzewa"
+
+msgid "Copy"
+msgstr "Skopiuj"
+
+msgid "Files"
+msgstr "Pliki"
+
+msgid "copying "
+msgstr "kopiowanie"
+
+msgid "moving"
+msgstr "przenoszenie"
+
+msgid " Move "
+msgstr " Przenieś"
+
+msgid "Delete"
+msgstr "Usuń"
+
+msgid "removing "
+msgstr "usuwanie"
+
+#: panel_engine.py:984
+#: panel_engine.py:1003
+#: panel_engine.py:1007
+#: panel_engine.py:1072
+#: panel_engine.py:1079
+#: panel_engine.py:1083
+#: panel_engine.py:1104
+#: panel_engine.py:1112
+#: panel_engine.py:1116
+msgid "<Let It Be>"
+msgstr "<Niech będzie>"
+
+#: panel_engine.py:1007
+msgid "can't rename"
+msgstr "nie może zmienić nazwy"
+
+#: panel_engine.py:1072
+msgid "File exists"
+msgstr "Plik istnieje."
+
+#: panel_engine.py:1083
+msgid "Can't create a Directory"
+msgstr "Nie można utworzyć katalog"
+
+#: panel_engine.py:1104
+msgid "File exists."
+msgstr "Plik istnieje."
+
+#: panel_engine.py:1116
+msgid "Can't create a playlist"
+msgstr "Nie można utworzyć listy odtwarzania"
+
+#: panel_engine.py:1234
+msgid " move "
+msgstr " przenieść"
+
+#: panel_engine.py:1234
+msgid "Move files and directories to"
+msgstr "Przenieść pliki i katalogi do"
+
+#: panel_engine.py:1234
+#: panel_engine.py:1265
+#: panel_engine.py:1326
+msgid "<Yes>"
+msgstr "<Tak>"
+
+#: panel_engine.py:1234
+#: panel_engine.py:1265
+#: panel_engine.py:1326
+msgid "<No>"
+msgstr "<Nie>"
+
+#: panel_engine.py:1265
+msgid " delete "
+msgstr " usunąć"
+
+#: panel_engine.py:1265
+msgid "Delete "
+msgstr "Usuń"
+
+#: panel_engine.py:1265
+msgid "files and directories?"
+msgstr "plików i katalogów?"
+
+#: panel_engine.py:1265
+msgid "<Random>"
+msgstr "<Losowo>"
+
+#: panel_engine.py:1270
+msgid " Create a new Directory "
+msgstr " Utwórz nowy katalog"
+
+#: panel_engine.py:1270
+msgid "Please, Enter Directory Name:"
+msgstr "Proszę wpisać nazwę katalog:"
+
+#: panel_engine.py:1270
+#: panel_engine.py:1276
+msgid "<Okey>"
+msgstr ""
+
+#: panel_engine.py:1270
+#: panel_engine.py:1276
+#: panel_engine.py:1326
+msgid "<Cancel>"
+msgstr "<Anuluj>"
+
+#: panel_engine.py:1276
+msgid " Create a new Playlist "
+msgstr "Utwórz nową listę odtwarzania"
+
+#: panel_engine.py:1276
+msgid "Please, Enter playlist name:"
+msgstr "Proszę wpisać nazwę listy odtwarzania:"
+
+#: panel_engine.py:1326
+msgid " quit "
+msgstr " wyjdź"
+
+#: panel_engine.py:1326
+msgid "Playlist was modified,"
+msgstr "Lista odtwarzania został zmodyfikowana,"
+
+#: panel_engine.py:1326
+msgid "save with exit?"
+msgstr ""
+
+#: panel_engine.py:1772
+msgid " New "
+msgstr " Nowy"
+
+#: panel_engine.py:1772
+msgid "What you want to create?"
+msgstr "Co chcesz utworzyć?"
+
+#: panel_engine.py:1772
+msgid "<Directory>"
+msgstr "<Katalog>"
+
+#: panel_engine.py:1772
+msgid "<Playlist>"
+msgstr "<Lista odtwarzania>"
+
+#: panel_engine.py:1772
+msgid "<Nothing>"
+msgstr "<Nic>"
+
+msgid " open the playlist "
+msgstr " otwórz listę odtwarzania"
+
+msgid "Playlist is being opened"
+msgstr "Lista odtwarzania jest otwarta"
+
+msgid " add "
+msgstr " dodaj"
+
+msgid "Songs are being added"
+msgstr "Utwory są dodawane"
+
+msgid "Tracks"
+msgstr "Utwory"
+
+msgid "<Search>"
+msgstr "<Szukaj>"
+
+msgid " Search "
+msgstr " Szukaj"
+
+msgid "Title:"
+msgstr "Tytuł:"
+
+msgid "Artist:"
+msgstr "Artysta:"
+
+msgid "Album:"
+msgstr "Album:"
+
+msgid " Directory Scanning "
+msgstr " Skanowanie katalogu"
+
+msgid "Directories"
+msgstr "Katalogi"
+
+msgid "Press ENTER key to abort"
+msgstr "Naciśnij klawisz ENTER, aby anulować"
+
+msgid " Command execution "
+msgstr " Wykonywanie polecenia"
+
+msgid "<Run>"
+msgstr "<Uruchom>"
+
+msgid "<Background>"
+msgstr "<Tło>"
+
+msgid "Please enter a command"
+msgstr "Proszę wpisać polecenie"
+
+msgid "Unable to execute the command!"
+msgstr "Nie można wykonać polecenia!"
+
+msgid "Waiting for the program to finish."
+msgstr "Oczekiwanie na zakończenie programu."
+
+msgid "Peyote was crashed!"
+msgstr "Pejotl uległ awarii!"
+
+msgid "Please send this file '"
+msgstr "Proszę przesłać ten plik '"
+
+msgid "' to me 'platonny@ngs.ru'"
+msgstr "' do mnie 'platonny@ngs.ru'"
+
+msgid "Your terminal must display these unicode symbols - "
+msgstr "Twój terminal musi wyświetlać te symbole unicode -"
+
+msgid "select color scheme ["
+msgstr "wybierz schemat kolorów ["
+
+msgid "       is an audio player with friendly MC-like interface."
+msgstr "       jest odtwarzaczem audio z przyjaznym interfejsem MC-podobnym."
+
+msgid "       free software (GPL) without any warranty but with best wishes"
+msgstr "       wolne oprogramowanie (GPL) bez żadnej gwarancji, ale z najlepszymi życzeniami"
+
+msgid "       website:"
+msgstr "       strona www:"
+
+msgid "secondary character encoding  (!= utf-8) ["
+msgstr "wtórne kodowanie znaków  (!= utf-8) ["
+
+msgid "audio output gstreamer plug-in ["
+msgstr "wyjście audio wtyczki gstreamer ["
+
+msgid "print this message and exit"
+msgstr "wyświetl ten komunikat i zakończ"
+
+msgid "supported options:"
+msgstr "obsługiwane opcje:"
+
+msgid "supported locations:"
+msgstr "obsługiwane lokalizacje:"
+
+msgid "Press enter to continue."
+msgstr "Naciśnij Enter, aby kontynuować."
+
+msgid "save"
+msgstr "zapisz"
+
+msgid "copy"
+msgstr "skopiuj"
+
+msgid "move"
+msgstr "przenieś"
+
+msgid "new"
+msgstr "nowy"
+
+msgid "delete"
+msgstr "usuń"
+
+msgid "rename"
+msgstr "zmień nazwę"
+
+msgid "tabs"
+msgstr "karty"
+
+msgid "mode"
+msgstr "tryb"
+
+msgid "search"
+msgstr "szukaj"
+
+msgid "go to"
+msgstr "idz do"
+
+msgid "cd"
+msgstr "cd"
+
+msgid "tag"
+msgstr "tag"
+
+msgid "border"
+msgstr "granica"
+
+msgid "size"
+msgstr "rozmiar"
+
+msgid "execute"
+msgstr "wykonać"
+
+msgid "quit"
+msgstr "wyjdź"
+
+msgid "add"
+msgstr "dodaj"
+
+msgid "append"
+msgstr "dodać"
+
+msgid "remove"
+msgstr "usuń"
+
+msgid "new panel"
+msgstr "nowy panel"
+
+msgid "close panel"
+msgstr "zamknij panel"
+
+msgid "redraw"
+msgstr "odświeżenie"
+
+msgid "add song"
+msgstr "dodać utwór"
+
+msgid "quick search"
+msgstr "szybkie wyszukiwanie"
+
+msgid "show files"
+msgstr "pokaż pliki"
+
+msgid "Home"
+msgstr "Dom"
+
+msgid "Equalizer"
+msgstr "Korektor"
+
+msgid "Please, wait ..."
+msgstr "Proszę czekać ..."
+
+msgid " Getting lyrics "
+msgstr " Pobieranie tekstu"
+
+msgid "Lyrics"
+msgstr "Tekst"
+
+msgid " Add a new Location "
+msgstr "Dodaj nową lokalizację"
+
+msgid "Location Name:"
+msgstr "Nazwa lokalizacji:"
+
+msgid "Location Path:"
+msgstr "Ścieżka lokalizacji:"
+
+msgid " Rename a Location "
+msgstr " Zmień nazwę lokalizacji"
+
+msgid "secondary charset encoding"
+msgstr "wtórne kodowanie znaków"
+
+msgid "audio extensions"
+msgstr "rozszerzenia audio"
+
+msgid "song title formats"
+msgstr "format tytułu utworu"
+
+msgid "playlist"
+msgstr "lista odtwarzania"
+
+msgid "default playlist"
+msgstr "domyślna lista odtwarzania"
+
+msgid "audio player"
+msgstr "odtwarzacz audio"
+
+msgid "file system"
+msgstr "system plików"
+
+msgid "Config"
+msgstr "Konfiguracja"
+
+msgid "[new]"
+msgstr "[nowy]"
+
+msgid "gst audio filters"
+msgstr "filtry audio"
+
+msgid "gst audio sink"
+msgstr ""
+
+msgid "[ add property ]"
+msgstr "[ dodaj obiekt ]"
+
+msgid "enabled"
+msgstr "włączony"
+
+msgid "disabled"
+msgstr "wyłączony"
+
+msgid "crossfade effect"
+msgstr "płynne przejście"
+
+msgid "time"
+msgstr "czas"
+
+msgid "prefered applications"
+msgstr "Preferowane aplikacje"
+
+msgid "[ add extension ]"
+msgstr "[ dodaj rozszerzenie ]"
+
+msgid "[Restart audio player]"
+msgstr "[Zrestartuj odtwarzacz audio]"
+
+msgid "terminal"
+msgstr "terminal"
+
+msgid "tree"
+msgstr "drzewo"
+
+msgid "volume"
+msgstr "głośność"
+
+msgid " save playlist as "
+msgstr " zapisz listę odtwarzania jako"
+
+msgid "<Save>"
+msgstr "<Zapisz>"
+
+msgid "<Relative paths>"
+msgstr "<Względna ścieżka>"
+
+msgid "Playlist Path"
+msgstr "Ścieżka listy odtwarzania"
+
+msgid "next ♫"
+msgstr "następny ♫"
+
+msgid "background"
+msgstr "tło"
+
+msgid "transparent"
+msgstr "przezroczysty"
+
+msgid "black"
+msgstr "czarny"
+
+msgid "red"
+msgstr "czerwony"
+
+msgid "green"
+msgstr "zielony"
+
+msgid "yellow"
+msgstr "żółty"
+
+msgid "blue"
+msgstr "niebieski"
+
+msgid "magenta"
+msgstr "purpurowy"
+
+msgid "cyan"
+msgstr "błękitny"
+
+msgid "white"
+msgstr "biały"
+
+msgid "panel"
+msgstr "panel"
+
+msgid "pop-up window"
+msgstr "okno powiadomień"
+
+msgid "player"
+msgstr "odtwarzacz"
+
+msgid "key bar"
+msgstr "pasek przycisków"
+
+msgid "active header"
+msgstr "aktywny nagłówek"
+
+msgid "passive header"
+msgstr "pasywny nagłówek"
+
+msgid "cursor"
+msgstr "kursor"
+
+msgid "pointer"
+msgstr "wskaźnik"
+
+msgid "pointer & cursor"
+msgstr "wskaźnik & kursor"
+
+msgid "tagged item"
+msgstr "oznakowana pozycja"
+
+msgid "directory"
+msgstr "katalog"
+
+msgid "song1"
+msgstr "utwór 1"
+
+msgid "song2"
+msgstr "utwór  2"
+
+msgid "song3"
+msgstr "utwór 3"
+
+msgid "song1(c2)"
+msgstr "utwór 1(c2)"
+
+msgid "song2(c2)"
+msgstr "utwór 2(c2)"
+
+msgid "song3(c2)"
+msgstr "utwór 3(c2)"
+
+msgid "file"
+msgstr "plik"
+
+msgid "location1"
+msgstr "lokalizacja 1"
+
+msgid "location2"
+msgstr "lokalizacja 2"
+
+msgid "lyrics"
+msgstr "teksty"
+
+msgid "inputbox"
+msgstr "pole wejściowe"
+
+msgid "inputbox cursor"
+msgstr "kursor pola wejściowego"
+
+msgid "active button"
+msgstr "aktywny przycisk"
+
+msgid "scrollbar"
+msgstr "pasek przewijania"
+
+msgid "scrollbar cursor"
+msgstr "kursor paska przewijania "
+
+msgid "equalizer tag1"
+msgstr "tag1 korektora "
+
+msgid "equalizer tag2"
+msgstr "tag2 korektora"
+
+msgid "progress"
+msgstr "postęp"
+
+msgid "body"
+msgstr "ciało"
+
+msgid "name"
+msgstr "nazwa"
+
+msgid "key"
+msgstr "klawisz"
+
+msgid "foreground"
+msgstr "pierwszy plan"
+
+msgid "bold"
+msgstr "pogrubienie"
+
+msgid "colors"
+msgstr "kolory"
+
+msgid " save equalizer "
+msgstr "zapisz korektor"
+
+msgid "<Default>"
+msgstr "<Domyślny>"
+
+msgid "<Artist>"
+msgstr "<Artysta>"
+
+msgid "<Album>"
+msgstr "<Album>"
+
+msgid "<Song>"
+msgstr "<Utwór>"
+
+msgid "Select a target"
+msgstr "Wybierz cel"
+
+msgid "show/hide tags"
+msgstr "pokaż/ukryj tagi"
+
+msgid "bands"
+msgstr "zespoły"
+
+msgid "encoders"
+msgstr "enkodery"
+
+msgid "profile name"
+msgstr "nazwa profilu"
+
+msgid "tag type"
+msgstr "typ tagu"
+
+msgid "destination"
+msgstr "docelowy"
+
+msgid "gst encoder"
+msgstr "enkoder"
+
+msgid "gst muxer"
+msgstr "mukser"
+
+msgid "[ add encoder ]"
+msgstr "[ dodać koder ]"
+
+msgid "properties"
+msgstr "właściwości"
+
+msgid "gst mixer"
+msgstr "mikser"
+
+msgid "appearance"
+msgstr "wygląd"
+
+msgid "icons"
+msgstr "ikony"
+
+msgid "using"
+msgstr "stosując"
+
+msgid "artists"
+msgstr "artyści"
+
+msgid "albums"
+msgstr "albumy"
+
+msgid "equalizer"
+msgstr "korektor"
+
+msgid "playing bar"
+msgstr "pasek odtwarzania "
+
+msgid "audio cursors"
+msgstr ""
+
+msgid "song status"
+msgstr "stan utworu"
+
+msgid "reset to defaults"
+msgstr "przywróć domyślne"
+
+msgid "Can't initialize encoder!"
+msgstr "Nie można zainicjować enkodera!"
+
+msgid "iso8859-1 charset detection"
+msgstr "iso8859-1 określenie kodowania"
+
+msgid "It is useful for Russian users"
+msgstr "Jest to przydatne dla rosyjskich użytkowników"
+
+msgid "remove a disc number from an album name"
+msgstr "usuń numer płyty z nazwy albumu"
+
+msgid "palette"
+msgstr "paleta"
+
+msgid "friendship bracelet"
+msgstr ""
+
+msgid "config"
+msgstr "konfiguracja"
+
+msgid "sort"
+msgstr "rodzaj"
+
+msgid "shuffle"
+msgstr "losowo"
+
+msgid "value must be between 0 and 1000"
+msgstr "wartość musi być pomiędzy 0 a 1000"
+
+msgid " Select "
+msgstr " Wybierz"
+
+msgid "<Select>"
+msgstr "<Wybierz>"
+
+msgid "This terminal can't change color"
+msgstr "W tym terminal nie można zmienić koloru"
+
+msgid "dice"
+msgstr "kość"
+
+msgid "equalizer holding"
+msgstr ""
+
+msgid "repeat"
+msgstr "powtórz"
+
+msgid "direction"
+msgstr "kierunek"
+
+msgid "keybar navigation"
+msgstr "nawigacja paska klawiszy"
+
+msgid "progress bar"
+msgstr "pasek postępu"
+
+msgid "hide keybar"
+msgstr "ukryj pasek klawisz"
+
+msgid "scroll bar"
+msgstr "pasek przewijania"
+
+msgid "cursed song"
+msgstr "przeklęty utwór"
+
+msgid "playing song description"
+msgstr "opis odtwarzanego utworu"
+
+msgid "left"
+msgstr "lewo"
+
+msgid "right"
+msgstr "prawo"
+
+msgid "bottom"
+msgstr "w dół"
+
+msgid "current skin"
+msgstr "obecna skórka"
+
+msgid "(un)curse"
+msgstr ""
+

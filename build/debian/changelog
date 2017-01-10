@@ -1,0 +1,141 @@
+peyote (0.9.12) stable; urgency=low
+  * 'V', 'v' keys -  seek backward/forward 10 seconds
+  * disabled 'slow redraw' when resizing window
+  * share/peyote -> lib/peyote
+  * config://hide unselected panel, when width less then
+  * config://appearance/rename skin
+  * 5 preset skins
+  * urxvt become default terminal
+  * --with-peyote configure option
+  * bugfixes
+ -- Platon Peacelove <platonny@ngs.ru>  Sat, 7 Apr 2012 00:56:41 +0600
+
+peyote (0.9.11) stable; urgency=low
+  * radio://
+  * radio://shoutcast
+  * radio://icecast
+  * config://notification
+  * http://cue bug fixed
+  * Lastfm scrobbling
+  * '3', '4' keys - decrease/increase crossfade time
+  * 'i'/'I' - go to the next/prev tagged entry
+  * '{' - sort playlist in chronological order
+  * F9 - edit selected song or tagged songs in playlist
+  * Able to adjust EQ-gain by clicking on it
+  * can copy/delete cue+image files
+  * changed copying behaviour
+  * search track form(? key) is opened in unselected panel
+  * XSPF and PSL playlist support
+  * Polish localization
+  * bugfixes
+ -- Platon Peacelove <platonny@ngs.ru>  Sat, 7 Apr 2012 00:56:41 +0600
+
+peyote (0.9.10) stable; urgency=low
+  * 'k', 'K' keys - (un)curse the currently selected song
+  * Changed the peyote config dir.
+  * Skin support.
+  * More options in config://
+  * bugs fixed
+ -- Platon Peacelove <platonny@ngs.ru>  Sat, 7 Apr 2012 00:56:41 +0600
+
+peyote (0.9.9) stable; urgency=low
+  * iso8859-1 charset detection
+  * hints in the config://
+  * feature: remove a disc number from an album name
+  * ']', '}' keys - sort/shuffle a playlist
+  * '~' key - move the selection bar to random entry
+  * '+' key - tag group of songs
+  * config://appearance/palette
+  * MANY bugs fixed
+
+ -- Platon Peacelove <platonny@ngs.ru>  Thu, 29 Dec 2011 03:56:41 +0600
+
+peyote (0.9.8) stable; urgency=low
+  * scroll bar
+  * config://aliases
+  * config://appearance/icons
+  * config://encoders
+  * Improved N-bands equalizer. It provides feature to save equalizer for artist/album/track
+  * 'h' key - [un]hold the equalizer
+  * 'F6' key - resize equalizer.
+
+ -- Platon Peacelove <platonny@ngs.ru>  Sat, 12 Nov 2011 03:56:41 +0600
+
+peyote (0.9.7) stable; urgency=low
+  * config://colors
+  * '5', '6' keys - decrease/increase software volume ( requires enabled 'volume' gst-plugin)
+  * bugfixes
+
+ -- Platon Peacelove <platonny@ngs.ru>  Thu, 13 Oct 2011 03:56:41 +0600 
+
+peyote (0.9.6) stable; urgency=low
+  * '7','8' keys - decrease/increase pitch
+  * 'p' key - display only one panel or back to the two panels
+  * improve the session storing
+  * bugfixes
+
+ -- Platon Peacelove <platonny@ngs.ru>  Sun, 3 Jul 2011 03:56:41 +0600 
+
+peyote (0.9.5) stable; urgency=low
+
+  * '9','0' keys  - decrease/increase volume
+  * '.' key - realign a cursor at center, top or bottom of a panel
+  * 'gst mixer' menu in config://
+  * Improve session storing.
+  * bugfixes.
+
+ -- Platon Peacelove <platonny@ngs.ru>  Thu, 2 Jun 2011 02:20:41 +0600
+
+peyote (0.9.4) stable; urgency=low
+
+  * '\',  '|' keys - enter in the tree mode ( leave the tree mode)
+  * fs-panels are updated automatically
+  * new dependency - pyinotify
+  * improve a lot of source code
+  * major bugfixes
+
+ -- Platon Peacelove <platonny@ngs.ru>  Wed, 4 May 2011 01:08:41 +0600
+
+peyote (0.9.3) stable; urgency=low
+
+  * Crossfade!
+  * Bugfixes
+
+ -- Platon Peacelove <platonny@ngs.ru>  Mon, 21 Mar 2011 05:22:11 +0600
+
+peyote (0.9.2) stable; urgency=low
+
+  * Audio filters
+  * Minor bugfixes
+
+ -- Platon Peacelove <platonny@ngs.ru>  Mon, 21 Mar 2011 05:22:11 +0600
+
+peyote (0.9.1) stable; urgency=low
+
+  * Fix several critical bugs
+  * fix minor bugs
+  * More faster
+
+ -- Platon Peacelove <platonny@ngs.ru>  Wed, 2 Mar 2011 05:22:11 +0600
+
+peyote (0.9.0) unstable; urgency=low
+
+  * Rewrite and improve a lot of source code.
+  * Fix a bug when copying from http to local disk.
+  * Fix http directories size calculating.
+  * Make the locations panel.
+  * Create the Playing Process Bar.
+
+ -- Platon Peacelove <platonny@ngs.ru>  Wed, 2 Feb 2011 07:25:34 +0600
+ 
+peyote (0.8.11-1) stable; urgency=low
+
+  * Minor bugfixes
+
+ -- Platon Peacelove <platonny@ngs.ru>  Mon, 10 Jan 2011 16:34:54 +0600
+
+peyote (0.8.10) stable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Platon Peacelove <platonny@ngs.ru>  Mon, 10 Jan 2011 16:34:54 +0600
