@@ -305,10 +305,8 @@ class GstPipelineHelper2:
         s.pipeline_name = s.pipeline.get_property("name")
 
     def on_message(s, bus, message):
-        import debug
         t = message.type
         src = message.src.get_name()
-        debug.debug(t, src, s.pipeline_name)
 
         if t == Gst.MessageType.STATE_CHANGED and s.state != None:
             if src == s.pipeline_name:
@@ -316,7 +314,6 @@ class GstPipelineHelper2:
                 ns = None
                 pn = None
                 os,ns,pn = message.parse_state_changed()#os, ns, pn)
-                debug.debug(os, ns,pn, s.state)
                 if ns == s.state:
                     s.state = None
                     s.sem.release()

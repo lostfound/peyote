@@ -949,3 +949,17 @@ msgstr "Поиск>"
 msgid "vk.com"
 msgstr "[В] палеве"
 
+msgid "Keyboard control"
+msgstr "Кнопочки"
+
+msgid "Mouse control"
+msgstr "Мышка"
+
+msgid "Table of contents"
+msgstr "Оглавление"
+
+msgid "_en"
+msgstr "_ru"
+
+msgid "Help"
+msgstr "Справочка"

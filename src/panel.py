@@ -32,6 +32,7 @@ from panel_locations import PLocations
 from panel_lyrics import PLyrics
 from panel_fs import PFS, PThread
 from panel_radio import PRadio
+from panel_help import PHelp
 from panel_config import PConfig
 from useful import *
 from sets import config, get_performer_alias, get_album_alias
@@ -43,7 +44,6 @@ from threading import Semaphore
 from random import randint
 
 import gettext
-from debug import debug, trace
 
 _ = localise
 
@@ -736,7 +736,7 @@ class PEvents:
     
 
 
-class PInterface(PFS, PPlaylist, PEqualizer, PLocations, PLyrics, PRadio):
+class PInterface(PFS, PPlaylist, PEqualizer, PLocations, PLyrics, PRadio, PHelp):
     def up(s):
         if not s.busy.is_set():
             s.panel.up()
@@ -904,6 +904,7 @@ class PInterface(PFS, PPlaylist, PEqualizer, PLocations, PLyrics, PRadio):
         if s.question:
             s.panel.right()
         elif not s.busy.is_set():
+
             if s.type == "fs":
                 if s.tree_mode and s.storage[s.panel.pos]['type'] == 'dir' and s.storage[s.panel.pos]['name'] not in ['~..', '/..', '..']:
                     s.tree_right()
@@ -911,17 +912,25 @@ class PInterface(PFS, PPlaylist, PEqualizer, PLocations, PLyrics, PRadio):
                     pc.next_track()
                 elif not pc.set_next_track(s.storage, s.panel.pos):
                     PFS.enter(s)
+
             elif s.type == "playlist":
                 if pc.ntrack and pc.ntrack.storage == s.storage and pc.ntrack.pos == s.panel.pos:
                     pc.next_track()
                 else:
                     pc.set_next_track(s.storage, s.panel.pos)
+
             elif s.type == 'equalizer':
                 PEqualizer.right(s)
+
             elif s.type == 'locations':
                 PLocations.enter(s)
+
+            elif s.type == 'help':
+                PHelp.enter(s)
+
             elif s.type == 'config':
                 PConfig.right(s)
+
             elif s.type == 'radio':
                 if pc.ntrack and pc.ntrack.storage == s.storage and pc.ntrack.pos == s.panel.pos:
                     pc.next_track()
@@ -945,6 +954,8 @@ class PInterface(PFS, PPlaylist, PEqualizer, PLocations, PLyrics, PRadio):
                 s.cd('locations://')
             elif s.type == 'radio':
                 s.radio_left()
+            elif s.type == 'help':
+                PHelp.left(s)
 
     def move(s,direction):
         if s.question or s.busy.is_set():
@@ -1076,6 +1087,9 @@ class PInterface(PFS, PPlaylist, PEqualizer, PLocations, PLyrics, PRadio):
 
         elif s.type == 'equalizer':
             PEqualizer.enter(s)
+
+        elif s.type == 'help':
+            PHelp.enter(s)
 
         elif s.type == 'radio':
             if not pc or not pc.set_next_track(s.storage, s.panel.pos):
@@ -1646,11 +1660,16 @@ class PEngine(PShort, PThread, PEvents, PInterface, PConfig):
 
         elif s.type == 'equalizer':
             s.equalizer_deinit()
+
         elif s.type == 'radio':
             s.radio_deinit()
 
+        elif s.type == 'help':
+            s.destroy_help()
+
         elif s.type == 'fs':
             s.callback.inotify_unsubscribe(s)
+
         s.death.set()
         try:
             s.tasks.put(None)
@@ -1820,7 +1839,7 @@ class PEngine(PShort, PThread, PEvents, PInterface, PConfig):
     def set_location(s, location, tp = None):
         """ Первый возвращаемый аргумент - локация индентична существующей, None если нет указанного путя
         Второй - локация содержит путь к файлу"""
-        if location in ['equalizer://', 'locations://', 'lyrics://', 'config://', 'radio://']:
+        if location in ['equalizer://', 'locations://', 'lyrics://', 'config://', 'radio://', "help://"]:
             if s.location == location:
                 return (True, False)
             s.location = location
@@ -1830,6 +1849,8 @@ class PEngine(PShort, PThread, PEvents, PInterface, PConfig):
 
             elif s.type == 'equalizer':
                 s.equalizer_deinit()
+            elif s.type == 'help':
+                s.destroy_help()
             elif s.type == 'radio':
                 s.radio_deinit()
             elif s.type == 'fs':
@@ -1847,8 +1868,12 @@ class PEngine(PShort, PThread, PEvents, PInterface, PConfig):
         elif s.type == 'equalizer':
             s.equalizer_deinit()
 
+        elif s.type == 'help':
+            s.destroy_help()
+
         elif s.type == 'radio':
             s.radio_deinit()
+
         elif s.type == 'fs':
             s.callback.inotify_unsubscribe(s)
 
@@ -1904,6 +1929,10 @@ class PEngine(PShort, PThread, PEvents, PInterface, PConfig):
             s.panel.refresh()
         elif s.type == 'radio':
             s.radio_init()
+            s.panel.head(s.location)
+            s.panel.refresh()
+        elif s.type == 'help':
+            PHelp.init_help(s)
             s.panel.head(s.location)
             s.panel.refresh()
 
@@ -1987,13 +2016,23 @@ class PEngine(PShort, PThread, PEvents, PInterface, PConfig):
                 location = unicode2(lc)
             if location:
                 if location == 'equalizer://':
+                    rc = s.set_location(location)
                     s.type = 'equalizer'
                     s.change_location()
                     PEqualizer.load_equalizer(s)
                     s.location = location
                     s.panel.head(s.location)
                     s.panel.refresh()
-                    return
+                    return rc
+                elif location == 'help://':
+                    rc = s.set_location(location)
+                    s.type = 'help'
+                    s.change_location()
+                    PHelp.init_help(s)
+                    s.location = location
+                    s.panel.head(s.location)
+                    s.panel.refresh()
+                    return rc
 
                 location = fs.auto.abspath(location, s.location)
 

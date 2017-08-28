@@ -25,7 +25,6 @@ import select
 import traceback
 import buttons
 import pickle
-import debug
 from time import sleep
 from peyote_exec import background
 
@@ -229,10 +228,8 @@ def next_panel():
     panels[np].chfocus()
     print_buttons()
 
-def new_panel():
+def new_panel(current_path='locations://'):
     global panels, pair,colors, nop, cplayer, lp,rp,cp, w, callback
-    #current_path = panels[cp].location
-    current_path = 'locations://'
     panels.append(panel_engine.PEngine( current_path, callback, pair, colors))
     np = nop
     nop += 1
@@ -696,6 +693,8 @@ def main(*args):
 
         elif k in [ord('t'), ord('T')]: # new panel
             new_panel()
+        elif k in [ord('h'), ord('H')]: # new panel with help
+            new_panel('help://')
         elif k in [ord('\\'), ord('|')]: #will be removed
             panels[cp].switch_tree_mode()
         elif k in [ord('y'), ord('Y')]: #close panel
@@ -734,7 +733,7 @@ def main(*args):
             pass
         elif k in [ord('r'), ord('R')]: #repeat
             ap.switch_repeat()
-        elif k in [ord('h'), ord('H')]: #hold equalizer
+        elif k in [ord('e'), ord('E')]: #hold equalizer
             ap.switch_hold_equalizer()
         elif k in [c.KEY_ENTER, 10]:
             panels[cp].enter(pc=player_cursor)
@@ -869,14 +868,13 @@ def main(*args):
 
         elif k in [ord('/')] and panels[cp].type != 'equalizer':
             panels[cp].fast_search()
-        elif k in [ord('V')]:
-            ap.seek(-10)
-        elif k in [ord('v')]:
+
+        elif k in [c.KEY_SRIGHT, ord(')')]:
             ap.seek(10)
-        elif k in [c.KEY_SRIGHT]:
-            ap.seek(10)
-        elif k in [c.KEY_SLEFT]:
+
+        elif k in [c.KEY_SLEFT, ord('(')]:
             ap.seek(-10)
+
         elif k in [ord('d'), ord('D')]:
             panels[cp].dirsize()
             

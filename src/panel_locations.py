@@ -143,6 +143,7 @@ class PLocations:
             locations.append({'type': 'system_location', 'path' :'radio://', 'name' : _('Radio') }) 
             locations.append({'type': 'system_location', 'path' :'lyrics://', 'name' : _('Lyrics') }) 
             locations.append({'type': 'system_location', 'path' :'config://', 'name' : _('Config') }) 
+            locations.append({'type': 'system_location', 'path' :'help://', 'name' : _('Help') }) 
             s.panel.progress.update_progress(0, 1);
             s.panel.refresh()
             locations += _read_user_specific_locations_file(s.panel)

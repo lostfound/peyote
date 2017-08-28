@@ -500,6 +500,7 @@ class PFS:
 
             elif item['type'] == 'fsfile':
                 peyote_exec.execute(item, s.location)
+
     def tree_back(s):
         s.storage.remember_cursors()
         selected_path = s.location
@@ -516,6 +517,7 @@ class PFS:
         s.storage.restore_cursors()
         s.panel.print_playercursor()
         s.callback.inotify_subscribe(s)
+
     def back(s):
         if  s.storage[s.panel.pos]['type'] == 'dir' and s.storage[s.panel.pos].get('opened'):
             s.fs_close_subdir()
