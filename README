@@ -36,6 +36,7 @@ Mutagen is a Python module to handle audio metadata.
 PyGobject is a Gobject Python Bindings
 Pyinotify is a Python package used for monitoring filesystems events
 Alsaaudio is a Python package
+LXML      is a Python package
 Terminal must display these unicode symbols: ☮, ☸, ♺, ⚮, ⚅, ⚯, ☰ , ♍, ☯, ♫, ⚐, ☐, ☒
 
 ********* INSTALLATION

@@ -21,58 +21,44 @@ import httplib, urllib
 lyrics_wikia = "lyrics.wikia.com"
 from urllib import quote,unquote
 from local_library import FengShui
+import lxml.html
 
-def num_to_chr(s):
-	r = ""
-	if s:
-		if s[-1] != '\n':
-			r = unichr(int(s))
-		else:
-			r  = unichr(int(s[:-1])) + '\n'
-	return r
-
-	
 def get_lyrics_from_lyricswikia(artist, song_name):
-	Artist = FengShui(artist)
-	Song_name = FengShui(song_name)
+    Artist = FengShui(artist)
+    Song_name = FengShui(song_name)
 
-	page_name = '/' + Artist + ":" + Song_name
+    page_name = '/wiki/' + Artist + ":" + Song_name
 
-	url = lyrics_wikia + page_name
-	conn = httplib.HTTPConnection(lyrics_wikia)
-	conn.request("GET", page_name )
+    url = lyrics_wikia + page_name
+    conn = httplib.HTTPConnection(lyrics_wikia)
+    conn.request("GET", page_name )
 
-	cnt = conn.getresponse()
-		
-	if cnt.status != 200:
-		return None
+    cnt = conn.getresponse()
+        
+    if cnt.status != 200:
+        return None
 
-	page = cnt.read().split('\n')
-
-	for line in page:
-		if "class='lyricbox'" in line:
-			line = line.replace('&#', '\n&#', 1).split('\n')[1]
-			line = line.replace('<br/>', '\n').replace('<br />', '\n').replace('<!--', '').replace(';', '')
-			lines = line.split('&#')
-			song_lyrics = u''
-			for line in lines:
-				if line:
-					try:
-						song_lyrics += num_to_chr(line)
-					except:
-						pass
-			if "[...Unfortunately, we are not licensed to display" in song_lyrics:
-				return None
-			return song_lyrics
-
-	return None
-	
-
+    page = cnt.read()
+    doc = lxml.html.fromstring(page)
+    lyricbox = doc.cssselect(".lyricbox")[0]
+    song_lyrics = u''
+    if lyricbox.text: song_lyrics+=lyricbox.text
+    for node in lyricbox:
+        if str(node.tag).lower() == "br": song_lyrics+="\n"
+        if node.tail:
+            song_lyrics += node.tail
+        if node.text:
+            song_lyrics += node.text
+            
+    song_lyrics = song_lyrics.strip()
+    if not song_lyrics: return None
+    return song_lyrics
+        
 if __name__ == "__main__":
-	import sys
-	if len(sys.argv) != 3:
-		sys.exit()
-	print get_lyrics_from_lyricswikia(sys.argv[1], sys.argv[2])
+    import sys
+    if len(sys.argv) != 3:
+        sys.exit()
+    print get_lyrics_from_lyricswikia(sys.argv[1], sys.argv[2])
 
 
 

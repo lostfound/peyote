@@ -27,7 +27,7 @@ from elyrics import get_lyrics_from_elyrics
 library = LyricsLibrary()
 
 #search_order = [ get_lyrics_from_elyrics, get_lyrics_from_lyricswikia ]
-search_order = [ get_lyrics_from_lyricswikia, get_lyrics_from_elyrics ]
+search_order = [ get_lyrics_from_lyricswikia]
 def search_lyrics(artist, song_name):
 	song_lyrics = library.get_lyrics( artist, song_name )
 	if song_lyrics:
@@ -51,6 +51,4 @@ if __name__ == "__main__":
 	if len(sys.argv) != 3:
 		sys.exit()
 	print search_lyrics(sys.argv[1], sys.argv[2])
-
-
 
