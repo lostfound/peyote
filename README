@@ -33,9 +33,9 @@ See ./COPYING for more details.
 
 Python >= 2.6 < 3
 Mutagen is a Python module to handle audio metadata.
-PyGST is a GStreamer Python Bindings
 PyGobject is a Gobject Python Bindings
 Pyinotify is a Python package used for monitoring filesystems events
+Alsaaudio is a Python package
 Terminal must display these unicode symbols: ☮, ☸, ♺, ⚮, ⚅, ⚯, ☰ , ♍, ☯, ♫, ⚐, ☐, ☒
 
 ********* INSTALLATION

@@ -1348,11 +1348,12 @@ class ExtensionOption(Option):
 class MixerMenu(Menu):
     def __init__(s, callback):
         s.callback = callback
-        Menu.__init__(s, _('gst mixer'), 0 )
+        Menu.__init__(s, _('volume control'), 0 )
 
     def children (s):
         cldrn = []
-        return [  MixerOption(s), MixerPropsMenu(s), MixerCurrentMixerOption(s) ]
+        #return [  MixerOption(s), MixerPropsMenu(s), MixerCurrentMixerOption(s) ]
+        return [  MixerCurrentMixerOption(s) ]
 
 class MixerCurrentMixerOption( Option ):
     def __init__(s, p):

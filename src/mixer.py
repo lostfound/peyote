@@ -69,6 +69,9 @@ class Mixer:
             try:
                 vol=min(100, s.get_volume_pp() + ppstep)
                 s.mixer.setvolume( int(vol) )
+                while vol != s.get_volume_pp() and vol != 100:
+                    vol=min(100, vol + ppstep)
+                    s.mixer.setvolume( int(vol) )
             except: pass
 
     def decrease_volume(s, ppstep = 1. ):
@@ -76,6 +79,9 @@ class Mixer:
             try:
                 vol=max(0, s.get_volume_pp() - ppstep)
                 s.mixer.setvolume( int(vol) )
+                while vol != s.get_volume_pp() and vol != 0:
+                    vol=max(0, vol - ppstep)
+                    s.mixer.setvolume( int(vol) )
             except: pass
 
 if __name__ == '__main__':

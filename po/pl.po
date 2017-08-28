@@ -757,7 +757,7 @@ msgstr "docelowy"
 msgid "gst encoder"
 msgstr "enkoder"
 
-msgid "gst muxer"
+msgid "volume control"
 msgstr "mukser"
 
 msgid "[ add encoder ]"
