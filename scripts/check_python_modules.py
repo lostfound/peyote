@@ -10,11 +10,13 @@ def print_fail_message(module_name, it_is_error=True):
 	global out,err
 	urls = {
 		'mutagen' : 'http://code.google.com/p/mutagen/downloads/list'
-		,'pygst' : 'http://gstreamer.freedesktop.org/modules/gst-python.html'
 		,'pygobject' : 'http://www.pygtk.org/downloads.html'
 		,'pyinotify' : 'https://github.com/seb-m/pyinotify/downloads'
 		,'dbus-python' : 'http://www.freedesktop.org/wiki/Software/DBusBindings'
 		,'pylast' : 'http://code.google.com/p/pylast/'
+		,'gstreamer' : 'https://gstreamer.freedesktop.org'
+		,'alsaaudio' : 'https://larsimmisch.github.io/pyalsaaudio/'
+		,'lxml' : 'http://lxml.de'
 	 	}
 	out.write("none\n")
 	if it_is_error:
@@ -42,36 +44,43 @@ else:
 
 
 try:
-	out.write("checking for pygst...")
-	import pygst
-	if len(sys.argv) == 1 or sys.argv[1]=="yes":
-		import gst
-except:
-	print_fail_message('pygst')
-	sys.exit(1)
-else:
-	if len(sys.argv) == 1 or sys.argv[1]=="yes":
-		for elm in ["autoaudiosink", "fakesink", "queue2", 'volume', "audioconvert", "playbin2", "equalizer-nbands"]:
-			out.write(".")
-			try:
-				gst.element_factory_make( elm )
-			except:
-				out.write("no\n")
-				err.write("'configure: error: " +  elm + " not found!\n")
-				err.write("  Please, install the gstreamer0.10-plugins-* packages" )
-	else:
-		pass
-
-	out.write('yes\n')
-
-try:
 	out.write("checking for pygobject...")
-	import gobject
+        import gi
 except:
 	print_fail_message('pygobject')
 	sys.exit(1)
 else:
 	out.write('yes\n')
+
+try:
+	out.write("checking for Gstreamer-1.0 ...")
+        gi.require_version('Gst', '1.0')
+        from gi.repository import Gst, GObject
+except:
+	print_fail_message('pygobject')
+	sys.exit(1)
+else:
+        GObject.threads_init()
+        Gst.init(None)
+	if len(sys.argv) == 1 or sys.argv[1]=="yes":
+		for elm in ["autoaudiosink", "fakesink", "queue2", 'volume', "audioconvert", "playbin", "equalizer-nbands", "pitch"]:
+			out.write(".")
+			try:
+                                if Gst.ElementFactory.make( elm ) == None:
+                                    out.write("NO\n")
+                                    err.write("'configure: error: " +  elm + " not found!\n")
+                                    err.write("  Please, install the gstreamer1.0-plugins-* packages\n" )
+                                    sys.exit(1)
+			except:
+				out.write("no\n")
+				err.write("'configure: error: " +  elm + " not found!\n")
+				err.write("  Please, install the gstreamer1.0-plugins-* packages\n" )
+                                sys.exit(1)
+	else:
+		pass
+
+	out.write('yes\n')
+
 
 try:
 	out.write("checking for dbus python bindings...")
@@ -81,6 +90,26 @@ except:
 	sys.exit(1)
 else:
 	out.write('yes\n')
+
+
+try:
+	out.write("checking for pyalsaaudio...")
+        import alsaaudio
+except:
+	print_fail_message('alsaaudio')
+	sys.exit(1)
+else:
+	out.write('yes\n')
+
+try:
+	out.write("checking for lxml...")
+        import lxml.html
+except:
+	print_fail_message('lxml')
+	sys.exit(1)
+else:
+	out.write('yes\n')
+
 try:
 	out.write("checking for pyinotify...")
 	import pyinotify
@@ -88,4 +117,3 @@ except:
 	print_fail_message('pyinotify', it_is_error=False)
 else:
 	out.write('yes\n')
-
