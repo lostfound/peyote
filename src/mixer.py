@@ -23,41 +23,30 @@ gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GObject
 from useful import unicode2
 from sets import config
+try:
+    import alsaaudio
+except: pass
 
 class Mixer:
     def __init__(s):
         s.mixer = None
+
     def restart(s):
         try:
-            if s.mixer:
-                s.mixer.set_state ( Gst.State.NULL )
-        except:
-            pass
-        s.mixer = None
-        try:
-            s.mixer = Gst.ElementFactory.make( config.mixer['plugin'] )
-            for p,v in config.mixer['properties']:
-                s.mixer.set_property(p, v)
+            s.mixer = alsaaudio.Mixer( alsaaudio.mixers()[config.mixer[ 'track_no' ]])
+        except: s.mixer =None
 
-            s.mixer.set_state(Gst.State.READY)
-        except:
-            s.mixer = None
     def get_labels(s):
-        ret = []
-        if s.mixer:
-            try:
-                for n,track in enumerate ( s.mixer.list_tracks() ):
-                    if s.mixer.get_volume(track) != ():
-                        ret.append( (n, unicode2 ( track.label ) ) )
-            except:
-                return []
-        return ret
+        try:
+            return map(lambda n: (n[0], n[1]),  enumerate ( alsaaudio.mixers() ) )
+        except:
+            return []
 
     def get_label(s, no=None):
         try:
             if no == None:
                 no = config.mixer [ 'track_no' ]
-            return unicode2 ( s.mixer.list_tracks()[no].label )
+            return unicode2 ( alsaaudio.mixers()[no] )
         except:
             return 'None'
     
@@ -72,32 +61,22 @@ class Mixer:
         
     def get_volume_pp(s):
         if s.mixer:
-            try:
-                track,pv = s._trpv()
-                return s.mixer.get_volume(track)[0]*pv
-            except:
-                return 0
+            try:    return s.mixer.getvolume()[0]
+            except: return 0
     
     def increase_volume(s, ppstep = 1.):
-        try:
-            track,pv = s._trpv()
-            vol = []
-            for n,v in enumerate ( s.mixer.get_volume(track) ):
-                dv = int(ppstep/pv)
-                if dv == 0:
-                    dv = 1 if ppstep > 0 else -1
-                v += dv
-                if v < track.min_volume:
-                    v = track.min_volume
-                elif  v > track.max_volume:
-                    v = track.max_volume
-                vol.append( int(v) )
-            s.mixer.set_volume( track, tuple(vol) )
-        except:
-            pass
+        if s.mixer:
+            try:
+                vol=min(100, s.get_volume_pp() + ppstep)
+                s.mixer.setvolume( int(vol) )
+            except: pass
 
     def decrease_volume(s, ppstep = 1. ):
-        s.increase_volume( - ppstep )
+        if s.mixer:
+            try:
+                vol=max(0, s.get_volume_pp() - ppstep)
+                s.mixer.setvolume( int(vol) )
+            except: pass
 
 if __name__ == '__main__':
     class Co:
@@ -111,15 +90,16 @@ if __name__ == '__main__':
     mix = Mixer()
     mix.restart()
     print mix.get_labels()
+    print mix.get_label()
     print mix.get_volume_pp()
     mix.increase_volume()
     print mix.get_volume_pp()
-    # BasicPlayer
-    default_mixer = "oss4mixer"
-    gst_mixer = Gst.ElementFactory.make(default_mixer)
-    gst_mixer.set_state(Gst.State.READY)
-    tracks = gst_mixer.list_tracks()
-    for track in tracks:
-        print track.label, track.min_volume, track.max_volume, track.num_channels, gst_mixer.get_volume(track)
-    print dir( tracks[0] )
-    print dir ( gst_mixer.get_volume )
+    ## BasicPlayer
+    #default_mixer = "oss4mixer"
+    #gst_mixer = Gst.ElementFactory.make(default_mixer)
+    #gst_mixer.set_state(Gst.State.READY)
+    #tracks = gst_mixer.list_tracks()
+    #for track in tracks:
+    #    print track.label, track.min_volume, track.max_volume, track.num_channels, gst_mixer.get_volume(track)
+    #print dir( tracks[0] )
+    #print dir ( gst_mixer.get_volume )
