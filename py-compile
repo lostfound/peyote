@@ -31,9 +31,9 @@ scriptversion=2009-04-28.21; # UTC
 if [ -z "$PYTHON" ]; then
   PYTHON=python
 fi
-
+echo $@
 basedir=
-destdir=
+destdir=/usr/local/lib/peyote
 files=
 while test $# -ne 0; do
   case "$1" in
@@ -49,7 +49,6 @@ while test $# -ne 0; do
       destdir=$2
       if test -z "$destdir"; then
         echo "$0: Missing argument to --destdir." 1>&2
-        exit 1
       fi
       shift
       ;;

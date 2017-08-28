@@ -1,6 +1,6 @@
 [Desktop Entry]
 Version=0.9.11
-Exec=/usr/bin/xpeyote
+Exec=/usr/local/bin/xpeyote
 Name=Peyote
 Comment=An audio player
 Name[ru]=Peyote

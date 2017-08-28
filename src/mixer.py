@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 #
-# Copyright (C) 2010-2011  Platon Peacel☮ve <platonny@ngs.ru>
+# Copyright (C) 2010-2017  Platon Peacel☮ve <platonny@ngs.ru>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import gst
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst, GObject
 from useful import unicode2
 from sets import config
 
@@ -28,16 +30,16 @@ class Mixer:
     def restart(s):
         try:
             if s.mixer:
-                s.mixer.set_state ( gst.STATE_NULL )
+                s.mixer.set_state ( Gst.State.NULL )
         except:
             pass
         s.mixer = None
         try:
-            s.mixer = gst.element_factory_make( config.mixer['plugin'] )
+            s.mixer = Gst.ElementFactory.make( config.mixer['plugin'] )
             for p,v in config.mixer['properties']:
                 s.mixer.set_property(p, v)
 
-            s.mixer.set_state(gst.STATE_READY)
+            s.mixer.set_state(Gst.State.READY)
         except:
             s.mixer = None
     def get_labels(s):
@@ -114,8 +116,8 @@ if __name__ == '__main__':
     print mix.get_volume_pp()
     # BasicPlayer
     default_mixer = "oss4mixer"
-    gst_mixer = gst.element_factory_make(default_mixer)
-    gst_mixer.set_state(gst.STATE_READY)
+    gst_mixer = Gst.ElementFactory.make(default_mixer)
+    gst_mixer.set_state(Gst.State.READY)
     tracks = gst_mixer.list_tracks()
     for track in tracks:
         print track.label, track.min_volume, track.max_volume, track.num_channels, gst_mixer.get_volume(track)

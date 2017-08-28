@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 #
-# Copyright (C) 2010-2011  Platon Peacel☮ve <platonny@ngs.ru>
+# Copyright (C) 2010-2017  Platon Peacel☮ve <platonny@ngs.ru>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ _ = localise
 #Underline will be replaced by ./configure script. Don't edit it!
 SHARE_DIR="/usr/local/share/peyote"
 #Underline will be replaced by ./configure script. Don't edit it!
-DEFAULT_TERMINAL="urxvt -e %peyote"
+DEFAULT_TERMINAL="urxvt +sb -sh 30 -fadecolor gray -fade 5 -tint gray -tr -fg white -fn xft:monospace:size=10 -geometry 100x42 -e %peyote"
 
 SKIN_POSTFIX = '.peyote.skin'
 config = None
@@ -43,7 +43,7 @@ class Cmd:
         s.cmd = {}
 
     def output_help_message(s):
-        print "Peyote " + reduce(lambda x,y : "%s.%s" % (x,y) , VERSION )  +" (c) 2010 - 2011 (c) Peace and Love"
+        print "Peyote " + reduce(lambda x,y : "%s.%s" % (x,y) , VERSION )  +" (c) 2010 - 2017 (c) Peace and Love"
         print _(u"       is an audio player with friendly MC-like interface.")
         print _("       free software (GPL) without any warranty but with best wishes")
         print _("       website:"), "http://peyote.sourceforge.net"

@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 #
-# Copyright (C) 2010-2011  Platon Peacel☮ve <platonny@ngs.ru>
+# Copyright (C) 2010-2017  Platon Peacel☮ve <platonny@ngs.ru>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import select
 import traceback
 import buttons
 import pickle
+import debug
 from time import sleep
 from peyote_exec import background
 
@@ -441,6 +442,9 @@ def main(*args):
         else:
             ap = player.AudioPlayer( )
     except Exception,e:
+        #import traceback
+        #ex_type, ex, tb = sys.exc_info()
+        #traceback.print_tb(tb)
         print "Player initialization failed:", e
         return
 
@@ -1165,7 +1169,7 @@ def peyote_sighandler(signo, unuse):
         sighandler(signal.SIGWINCH, 0)
 
 #Underline will be replaced by ./configure script. Don't edit it!
-LOCALE_DIR="/usr/share/locale"
+LOCALE_DIR="/usr/local/share/locale"
 
 if __name__ == "__main__":
     gettext.bindtextdomain('peyote', LOCALE_DIR)
@@ -1178,6 +1182,11 @@ if __name__ == "__main__":
     config.Load()
     config.LoadEqualizers()
     config.parse_commandline()
+    import gi
+    gi.require_version('Gst', '1.0')
+    from gi.repository import GObject, Gst
+    GObject.threads_init()
+    Gst.init(None)
 
     import panel_config
     import cursor
@@ -1191,9 +1200,9 @@ if __name__ == "__main__":
     import cue,media_fs
     from thread_system.task_workers import TaskWorkers
     from nc_panel.semaphores import CURSES_SEM, curses_lock, curses_unlock
-    import gobject
-    from peyote_dbus import *
-    import dbus, dbus.service, dbus.mainloop.glib
+    if dbus_enabled:
+        from peyote_dbus import *
+        import dbus, dbus.service, dbus.mainloop.glib
     import fs.auto
     import thread_system.thread_polls
     import peyote_exec
@@ -1223,38 +1232,39 @@ if __name__ == "__main__":
         #signal.signal(signal.SIGTERM, peyote_sighandler)
         signal.signal(signal.SIGINT, peyote_sighandler)
 
-    gobject.threads_init()
     import fs_events
     if fs_events.inotify_support:
         fs_events.start()
 
     #Initialize TaskWorkers
     workers = TaskWorkers(3)
+
+    if dbus_enabled:
+        dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+        dbus_path_init()
+
+        try:
+            session_bus = dbus.SessionBus()
+        except:
+            dbus_enabled = False
+        else:
+            name = dbus.service.BusName(dbus_path, session_bus)
+            object = PeyoteDbus(session_bus, '/Mescaline')
+            Thread(target=dbus_responser_thread).start()
+
+    loop = GObject.MainLoop()
+
     if crutch:
         signal.signal(signal.SIGINT, lambda a,b: None)
         sigthread = Thread( target = wait_for_signal )
         sigthread.start()
 
-    dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-    dbus_path_init()
-
-    try:
-        session_bus = dbus.SessionBus()
-    except:
-        dbus_enabled = False
-    else:
-        name = dbus.service.BusName(dbus_path, session_bus)
-        object = PeyoteDbus(session_bus, '/Mescaline')
-        Thread(target=dbus_responser_thread).start()
-
-    loop = gobject.MainLoop()
-    gobject.timeout_add( 5000, peyote_exec.check_programs )
+    GObject.timeout_add( 5000, peyote_exec.check_programs )
     Thread(target=peyote).start()
     loop.run()
     peyote_exec.stop()
 
 
-    #gtk.main()
     try:
         c.endwin()
     except:

@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/python2 /usr/lib/peyote/peyote.py $@ 2> /dev/null
+/usr/bin/python /usr/local/lib/peyote/peyote.py $@ 2> /dev/null

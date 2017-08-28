@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 #
-# Copyright (C) 2010-2011  Platon Peacel☮ve <platonny@ngs.ru>
+# Copyright (C) 2010-2017  Platon Peacel☮ve <platonny@ngs.ru>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,15 +20,20 @@
 
 from mutagen.easyid3 import EasyID3
 import sys, os, time, threading
-import pygst
-#pygst.require("0.10")
-import gst, time
+import time
 import cue
 import pickle
 from useful import quote_http, quote
 from sets import config, get_performer_alias, get_album_alias
-from gst import STATE_NULL, STATE_PAUSED, STATE_PLAYING
 from thread_system.thread_polls import polls
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst, GObject
+
+if __name__ == "__main__":
+    GObject.threads_init()
+    Gst.init(None)
+
 from equalizer import *
 from threading import Semaphore, Event, Thread
 from Queue import Queue, Empty, Full
@@ -289,7 +294,7 @@ class GstPipelineHelper2:
             return False
 
     def reset(s):
-        s.time_format = gst.Format(gst.FORMAT_TIME)
+        s.time_format = Gst.Format.TIME #gst.Format(gst.FORMAT_TIME)
         s.state = None
         s.eof = False
         s.sem = Semaphore(0)
@@ -300,19 +305,22 @@ class GstPipelineHelper2:
         s.pipeline_name = s.pipeline.get_property("name")
 
     def on_message(s, bus, message):
+        import debug
         t = message.type
         src = message.src.get_name()
+        debug.debug(t, src, s.pipeline_name)
 
-        if t == gst.MESSAGE_STATE_CHANGED and s.state != None:
+        if t == Gst.MessageType.STATE_CHANGED and s.state != None:
             if src == s.pipeline_name:
                 os = None
                 ns = None
                 pn = None
                 os,ns,pn = message.parse_state_changed()#os, ns, pn)
+                debug.debug(os, ns,pn, s.state)
                 if ns == s.state:
                     s.state = None
                     s.sem.release()
-        elif t == gst.MESSAGE_EOS and src == s.pipeline_name:
+        elif t == Gst.MessageType.EOS and src == s.pipeline_name:
             s.eof = True
             s.sem.release()
             s.the_end.set()
@@ -320,12 +328,12 @@ class GstPipelineHelper2:
                 workers.add_immediate_task(s.task_eos, [])
             except: pass
 
-        elif t == gst.MESSAGE_ERROR:
+        elif t == Gst.MessageType.ERROR:
             s.error = True
             err, s.error_desc = message.parse_error()
             s.sem.release()
             s.the_end.set()
-        elif t == gst.MESSAGE_TAG:
+        elif t == Gst.MessageType.TAG:
             try:
                 p = s.p
             except:
@@ -421,25 +429,28 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
         s.softvol = None
         s.player_name = "player-%i" % no
         s.no = no
-        s.pipeline = gst.element_factory_make("playbin2", "player-%i" % no )
-        fakesink = gst.element_factory_make("fakesink", "fakesink-%i" % no )
+        s.pipeline = Gst.ElementFactory.make("playbin", "player-%i" % no )
+        fakesink = Gst.ElementFactory.make("fakesink", "fakesink-%i" % no )
         if not s.eq:
             s.eq = Equalizer()
         s.fakesink = fakesink
         s.equalizer = s.eq.eq
 
-        abin = gst.Bin()
-        asink = gst.element_factory_make( player_config['audio_sink'] )
+        abin = Gst.Bin()
+        asink = Gst.ElementFactory.make( player_config['audio_sink'] )
         for p,v in player_config['audio_sink_params']:
             asink.set_property(p,v)
-        s.queue = gst.element_factory_make("queue2", "aqueue-%i" % no)
+        s.queue = Gst.ElementFactory.make("queue2", "aqueue-%i" % no)
 
         s.asink = asink
-        try:
-            s.asink.get_properties('volume')
-            s.volume = s.asink
-        except:
-            s.volume = gst.element_factory_make('volume')
+        if True: #PORTING
+            s.volume = Gst.ElementFactory.make('volume')
+        else:
+            try:
+                s.asink.get_properties('volume')
+                s.volume = s.asink
+            except:
+                s.volume = Gst.ElementFactory.make('volume')
 
 
         for p,v in player_config['audio_sink_params']:
@@ -449,8 +460,8 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
         pre_sinks = []
         for ps in player_config['pre_sinks']:
             if ps[1]:
-                pre_sinks.append( gst.element_factory_make('audioconvert') )
-                pre_sinks.append(gst.element_factory_make(ps[0]))
+                pre_sinks.append( Gst.ElementFactory.make('audioconvert') )
+                pre_sinks.append(Gst.ElementFactory.make(ps[0]))
                 for p,v in ps[2]:
                     pre_sinks[-1].set_property(p,v)
                 if ps[0] == 'pitch':
@@ -470,27 +481,37 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
             sv_graph = []
 
 
-        #elements = pre_sinks + [s.queue, gst.element_factory_make('audioconvert'), s.equalizer, s.volume, asink]
+        #elements = pre_sinks + [s.queue, Gst.ElementFactory.make('audioconvert'), s.equalizer, s.volume, asink]
         if s.volume == asink:
-            elements = pre_sinks + [s.queue] + pitch_graph + sv_graph + [ gst.element_factory_make('audioconvert'), s.equalizer, asink]
+            elements = pre_sinks + [s.queue] + pitch_graph + sv_graph + [ Gst.ElementFactory.make('audioconvert'), s.equalizer, asink]
         else:
-            elements = pre_sinks + [s.queue] + pitch_graph + sv_graph + [ gst.element_factory_make('audioconvert'), s.equalizer, s.volume, asink]
+            elements = pre_sinks + [s.queue] + pitch_graph + sv_graph + [ Gst.ElementFactory.make('audioconvert'), s.equalizer, s.volume, asink]
         s.pre_sinks = pre_sinks
         #elements = [s.queue, s.equalizer, asink]
         try:
-            abin.add(*elements)
-            gst.element_link_many(*elements)
+            #abin.add(*elements)
+            for e in elements:
+                abin.add(e)
+
+            #gst.element_link_many(*elements)
+            for e0,e1 in zip(elements[:-1], elements[1:]):
+                e0.link(e1)
         except Exception,e:
             elements = [s.queue, s.equalizer, s.volume, asink]
-            gst.element_link_many(*elements)
+            for e in elements:
+                abin.add(e)
+            #gst.element_link_many(*elements)
+            for e0,e1 in zip(elements[:-1], elements[1:]):
+                e0.link(e1)
 
         sinkpad = elements[0].get_static_pad("sink")
         s.sinkpad = sinkpad
-        abin.add_pad(gst.GhostPad('sink', sinkpad))
+        abin.add_pad(Gst.GhostPad.new('sink', sinkpad))
         s.pipeline.set_property("audio-sink", abin)
         s.abin = abin
         s.pipeline.set_property("video-sink", fakesink)
-        s.time_format = gst.Format(gst.FORMAT_TIME)
+        #s.time_format = gst.Format(gst.FORMAT_TIME)
+        s.time_format = Gst.Format.TIME #gst.Format(gst.FORMAT_TIME)
         
         bus = s.pipeline.get_bus()
         bus.add_signal_watch()
@@ -502,7 +523,7 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
 
     def prepare_file(s, location, start_time = None, stop_time = None ):
         s.reset()
-        s.pipeline.set_state(STATE_NULL);
+        s.pipeline.set_state(Gst.State.NULL);
         s.stop_time = stop_time
 
         is_HTTP = False
@@ -515,13 +536,14 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
         else:
             s.pipeline.set_property("uri", u"file://" + quote(location) )
 
-        if not s.set_state(gst.STATE_PAUSED):
+        if not s.set_state(Gst.State.PAUSED):
             return
 
         try:
-            s.duration = s.pipeline.query_duration(s.time_format, None)[0]
+            s.duration = s.pipeline.query_duration(s.time_format)[1]
         except Exception, e:
             pass
+
 
         #calculate duration
         if stop_time == None:
@@ -541,16 +563,16 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
             if stop_time != None:
                 if is_HTTP or 1:
                     s.pipeline.seek_simple(s.time_format, 
-                        gst.SEEK_FLAG_FLUSH,
+                        Gst.SeekFlags.FLUSH,
                         s.position)
                 else:
                     s.pipeline.seek(
-                        1.0, s.time_format, gst.SEEK_FLAG_FLUSH,
-                        gst.SEEK_TYPE_SET, s.position, 
-                        gst.SEEK_TYPE_SET, stop_time)
+                        1.0, s.time_format, Gst.SeekFlags.FLUSH,
+                        Gst.SeekType.SET, s.position, 
+                        Gst.SeekType.SET, stop_time)
             else:
                 s.pipeline.seek_simple(s.time_format, 
-                    gst.SEEK_FLAG_FLUSH,
+                    Gst.SeekFlags.FLUSH,
                     s.position)
             s.position = None
                 
@@ -558,16 +580,16 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
             if stop_time != None:
                 if is_HTTP or 1:
                     s.pipeline.seek_simple(s.time_format, 
-                        gst.SEEK_FLAG_FLUSH,
+                        Gst.SeekFlags.FLUSH,
                         start_time)
                 else:
                     s.pipeline.seek(
-                        1.0, s.time_format, gst.SEEK_FLAG_FLUSH,
-                        gst.SEEK_TYPE_SET, start_time, 
-                        gst.SEEK_TYPE_SET, stop_time)
+                        1.0, s.time_format, Gst.SeekFlags.FLUSH,
+                        Gst.SeekType.SET, start_time, 
+                        Gst.SeekType.SET, stop_time)
             else:
                 s.pipeline.seek_simple(s.time_format, 
-                    gst.SEEK_FLAG_FLUSH,
+                    Gst.SeekFlags.FLUSH,
                     start_time)
         return True
 
@@ -613,11 +635,11 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
 
     def play_track(s, track = None):
         s.prepare_track(track)
-        if s.set_state(STATE_PLAYING):
+        if s.set_state(Gst.State.PLAYING):
             return True
 
     def stop(s):
-        s.pipeline.set_state(STATE_NULL)
+        s.pipeline.set_state(Gst.State.NULL)
         return
 
     def restart(s, v=False):
@@ -625,20 +647,20 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
         r = False
         b = False
         if v:
-            if status == STATE_PLAYING:
+            if status == Gst.State.PLAYING:
                 s.playpause()
-                while s.get_state() == STATE_PLAYING:
+                while s.get_state() == Gst.State.PLAYING:
                     time.sleep(0.03)
                 r = True
-            elif status == STATE_PAUSED:
+            elif status == Gst.State.PAUSED:
                 track = s.track
                 s.stop()
                 b = True
-                while s.get_state() != STATE_NULL:
+                while s.get_state() != Gst.State.NULL:
                     time.sleep(0.03)
         else:
             s.stop()
-            while s.get_state() != STATE_NULL:
+            while s.get_state() != Gst.State.NULL:
                 time.sleep(0.03)
         
         del s.queue
@@ -658,20 +680,20 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
             s.prepare_track(track)
         #s.start()
     def get_state(s):
-        return s.pipeline.get_state()[1]
+        return s.pipeline.get_state(Gst.State.NULL)[1]
 
     def get_status(s):
-        status = s.pipeline.get_state()[1]
-        if status == gst.STATE_PLAYING:
+        status = s.pipeline.get_state(Gst.State.NULL)[1]
+        if status == Gst.State.PLAYING:
             return "Playing"
-        elif status == STATE_NULL and s.track != None and s.position != None:
+        elif status == Gst.State.NULL and s.track != None and s.position != None:
             return "Paused"
         else:
             return "Stopped"
 
     def get_current_ns(s):
         try:
-            pos = s.pipeline.query_position(s.time_format, None)[0]
+            pos = s.pipeline.query_position(s.time_format)[1]
         except Exception,e:
             pos = None
         return pos
@@ -680,18 +702,18 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
         s.volume.set_property("volume", volume)
 
     def play(s):
-        status = s.pipeline.get_state()[1]
-        if status == gst.STATE_PAUSED:
-            s.set_state(gst.STATE_PLAYING)
+        status = s.pipeline.get_state(Gst.State.NULL)[1]
+        if status == Gst.State.PAUSED:
+            s.set_state(Gst.State.PLAYING)
     
     def get_equalizer(s):
         return s.eq
 
     def playpause(s):
-        if s.pipeline.get_state()[1] == gst.STATE_PLAYING:
+        if s.pipeline.get_state(Gst.State.NULL)[1] == Gst.State.PLAYING:
             try:
-                s.position = s.pipeline.query_position(s.time_format, None)[0]
-                s.pipeline.set_state(STATE_NULL);
+                s.position = s.pipeline.query_position(s.time_format)[1]
+                s.pipeline.set_state(Gst.State.NULL);
             except:
                 pass
             return True
@@ -700,25 +722,25 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
             s.position = None
             return False
     def seek_pp(s, pp):
-        if s.pipeline.get_state()[1] == gst.STATE_PLAYING:
+        if s.pipeline.get_state(Gst.State.NULL)[1] == Gst.State.PLAYING:
             start_time = int(s.duration_ns*pp)
             if s.start_time:
                 start_time += s.start_time
-            s.set_state(gst.STATE_PAUSED)
+            s.set_state(Gst.State.PAUSED)
             is_HTTP = s._is_HTTP()
             if s.stop_time != None and not is_HTTP and 0:
                 s.pipeline.seek(
-                    1.0, s.time_format, gst.SEEK_FLAG_FLUSH,
-                    gst.SEEK_TYPE_SET, start_time, 
-                    gst.SEEK_TYPE_SET, s.stop_time)
+                    1.0, s.time_format, Gst.SeekFlags.FLUSH,
+                    Gst.SeekType.SET, start_time, 
+                    Gst.SeekType.SET, s.stop_time)
             else:
                 s.pipeline.seek_simple(s.time_format, 
-                    gst.SEEK_FLAG_FLUSH,
+                    Gst.SeekFlags.FLUSH,
                     start_time)
-            s.set_state(gst.STATE_PLAYING)
+            s.set_state(Gst.State.PLAYING)
 
     def seek(s, offset):
-        if s.pipeline.get_state()[1] == gst.STATE_PLAYING:
+        if s.pipeline.get_state(Gst.State.NULL)[1] == Gst.State.PLAYING:
             start_time = s.get_current_ns()
             if start_time != None:
                 start_time += offset*1000000000L
@@ -732,18 +754,18 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
                 stop_time = s.stop_time
             if start_time > stop_time:
                 return
-            s.set_state(gst.STATE_PAUSED)
+            s.set_state(Gst.State.PAUSED)
             is_HTTP = s._is_HTTP()
             if s.stop_time != None and not is_HTTP and 0:
                 s.pipeline.seek(
-                    1.0, s.time_format, gst.SEEK_FLAG_FLUSH,
-                    gst.SEEK_TYPE_SET, start_time, 
-                    gst.SEEK_TYPE_SET, s.stop_time)
+                    1.0, s.time_format, Gst.SeekFlags.FLUSH,
+                    Gst.SeekType.SET, start_time, 
+                    Gst.SeekType.SET, s.stop_time)
             else:
                 s.pipeline.seek_simple(s.time_format, 
-                    gst.SEEK_FLAG_FLUSH,
+                    Gst.SeekFlags.FLUSH,
                     start_time)
-            s.set_state(gst.STATE_PLAYING)
+            s.set_state(Gst.State.PLAYING)
             try:
                 pos = s.get_current_ns()
                 spos = convert_ns(pos-s.start_time)
@@ -856,20 +878,20 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
         s.pitch = None
         s.softvol = None
 
-        s.pipeline = gst.element_factory_make("playbin2", "player")
-        fakesink = gst.element_factory_make("fakesink", "fakesink")
+        s.pipeline = Gst.ElementFactory.make("playbin3", "player")
+        fakesink = Gst.ElementFactory.make("fakesink", "fakesink")
         
-        abin = gst.Bin()
-        asink = gst.element_factory_make( player_config['audio_sink'] )
+        abin = Gst.Bin()
+        asink = Gst.ElementFactory.make( player_config['audio_sink'] )
         for p,v in player_config['audio_sink_params']:
             asink.set_property(p,v)
-        s.queue = gst.element_factory_make("queue2", "aqueue")
+        s.queue = Gst.ElementFactory.make("queue2", "aqueue")
 
         pre_sinks = []
         for ps in player_config['pre_sinks']:
             if ps[1]:
-                pre_sinks.append( gst.element_factory_make('audioconvert') )
-                pre_sinks.append(gst.element_factory_make(ps[0]))
+                pre_sinks.append( Gst.ElementFactory.make('audioconvert') )
+                pre_sinks.append(Gst.ElementFactory.make(ps[0]))
                 for p,v in ps[2]:
                     pre_sinks[-1].set_property(p,v)
                 if ps[0] == 'pitch':
@@ -889,19 +911,30 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
             sv_graph = []
 
 
-        elements = pre_sinks + [s.queue] + pitch_graph + sv_graph + [ gst.element_factory_make('audioconvert'), s.equalizer.eq, asink]
+        elements = pre_sinks + [s.queue] + pitch_graph + sv_graph + [ Gst.ElementFactory.make('audioconvert'), s.equalizer.eq, asink]
         try:
-            abin.add(*elements)
-            gst.element_link_many(*elements)
+            #abin.add(*elements)
+            for e in elements:
+                abin.add(e)
+
+            #gst.element_link_many(*elements)
+            for e0,e1 in zip(elements[:-1], elements[1:]):
+                e0.link(e1)
+
         except Exception,e:
-            elements = [s.queue, s.equalizer.eq, asink]
-            gst.element_link_many(*elements)
+            elements = [s.queue, s.equalizer, s.volume, asink]
+            for e in elements:
+                abin.add(e)
+            #gst.element_link_many(*elements)
+            for e0,e1 in zip(elements[:-1], elements[1:]):
+                e0.link(e1)
+
         sinkpad = elements[0].get_static_pad("sink")
-        abin.add_pad(gst.GhostPad('sink', sinkpad))
+        abin.add_pad(Gst.GhostPad.new('sink', sinkpad))
 
         s.pipeline.set_property("audio-sink", abin)
         s.pipeline.set_property("video-sink", fakesink)
-        s.time_format = gst.Format(gst.FORMAT_TIME)
+        s.time_format = Gst.Format.TIME
         s.asink = asink
         
         bus = s.pipeline.get_bus()
@@ -967,7 +1000,7 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
 
     def exit(s):
         s.life = False
-        s.pipeline.set_state(STATE_NULL);
+        s.pipeline.set_state(Gst.State.NULL);
         del s.queue
         del s.asink
         del s.bus
@@ -979,18 +1012,19 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
 
 
     def get_status(s):
-        status = s.pipeline.get_state()[1]
-        if status == gst.STATE_PLAYING:
+        status = s.pipeline.get_state(Gst.State.NULL)[1]
+        if status == Gst.State.PLAYING:
             return "Playing"
-        elif status == STATE_NULL and s.track != None and s.position != None:
+        elif status == Gst.State.NULL and s.track != None and s.position != None:
             return "Paused"
         else:
             return "Stopped"
+
     def playpause(s):
-        if s.pipeline.get_state()[1] == gst.STATE_PLAYING:
+        if s.pipeline.get_state(Gst.State.NULL)[1] == Gst.State.PLAYING:
             try:
-                s.position = s.pipeline.query_position(s.time_format, None)[0]
-                s.pipeline.set_state(STATE_NULL);
+                s.position = s.pipeline.query_position(s.time_format)[1]
+                s.pipeline.set_state(Gst.State.NULL);
                 if s.gui != None:
                     s.gui.on_pause(s.track)
                 
@@ -1031,6 +1065,7 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
 
         if not s.hold_equalizer:
             s.equalizer.Load( config.GetEqualizer(s.track) )
+
         if track.has_key("begin"):
             start_time = cue_time_to_ns(track['begin'])
             s.start_time = start_time
@@ -1049,6 +1084,7 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
             else:
                 stop_time = None
             s.play_file(track['addr'], start_time, stop_time)
+
         if s.gui != None:
             s.gui.update_track(track)
             s.gui.print_shuffle(s.shuffle)
@@ -1059,25 +1095,25 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
 
     
     def seek_pp(s, pp):
-        if s.pipeline.get_state()[1] == gst.STATE_PLAYING:
+        if s.pipeline.get_state(Gst.State.NULL)[1] == Gst.State.PLAYING:
             start_time = int(s.duration_ns*pp)
             if s.start_time:
                 start_time += s.start_time
-            s.set_state(gst.STATE_PAUSED)
+            s.set_state(Gst.State.PAUSED)
             is_HTTP = s._is_HTTP()
             if s.stop_time != None and not is_HTTP and 0:
                 s.pipeline.seek(
-                    1.0, s.time_format, gst.SEEK_FLAG_FLUSH,
-                    gst.SEEK_TYPE_SET, start_time, 
-                    gst.SEEK_TYPE_SET, s.stop_time)
+                    1.0, s.time_format, Gst.SeekFlags.FLUSH,
+                    Gst.SeekType.SET, start_time, 
+                    Gst.SeekType.SET, s.stop_time)
             else:
                 s.pipeline.seek_simple(s.time_format, 
-                    gst.SEEK_FLAG_FLUSH,
+                    Gst.SeekFlags.FLUSH,
                     start_time)
-            s.set_state(gst.STATE_PLAYING)
+            s.set_state(Gst.State.PLAYING)
 
     def seek(s, offset):
-        if s.pipeline.get_state()[1] == gst.STATE_PLAYING:
+        if s.pipeline.get_state(Gst.State.NULL)[1] == Gst.State.PLAYING:
             start_time = s.get_current_ns()
             if start_time != None:
                 start_time += offset*1000000000L
@@ -1091,18 +1127,18 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
                 stop_time = s.stop_time
             if start_time > stop_time:
                 return
-            s.set_state(gst.STATE_PAUSED)
+            s.set_state(Gst.State.PAUSED)
             is_HTTP = s._is_HTTP()
             if s.stop_time != None and not is_HTTP and 0:
                 s.pipeline.seek(
-                    1.0, s.time_format, gst.SEEK_FLAG_FLUSH,
-                    gst.SEEK_TYPE_SET, start_time, 
-                    gst.SEEK_TYPE_SET, s.stop_time)
+                    1.0, s.time_format, Gst.SeekFlags.FLUSH,
+                    Gst.SeekType.SET, start_time, 
+                    Gst.SeekType.SET, s.stop_time)
             else:
                 s.pipeline.seek_simple(s.time_format, 
-                    gst.SEEK_FLAG_FLUSH,
+                    Gst.SeekFlags.FLUSH,
                     start_time)
-            s.set_state(gst.STATE_PLAYING)
+            s.set_state(Gst.State.PLAYING)
             try:
                 pos = s.get_current_ns()
                 spos = convert_ns(pos-s.start_time)
@@ -1113,7 +1149,7 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
 
     def play_file(s, location, start_time = None, stop_time = None ):
         s.reset()
-        s.pipeline.set_state(STATE_NULL);
+        s.pipeline.set_state(Gst.State.NULL);
         s.stop_time = stop_time
 
         is_HTTP = False
@@ -1126,11 +1162,11 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
         else:
             s.pipeline.set_property("uri", u"file://" + quote(location) )
 
-        if not s.set_state(gst.STATE_PAUSED):
+        if not s.set_state(Gst.State.PAUSED):
             return
 
         try:
-            s.duration = s.pipeline.query_duration(s.time_format, None)[0]
+            s.duration = s.pipeline.query_duration(s.time_format)[1]
         except:
             s.duration = 0
 
@@ -1152,16 +1188,16 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
             if stop_time != None:
                 if is_HTTP or 1:
                     s.pipeline.seek_simple(s.time_format, 
-                        gst.SEEK_FLAG_FLUSH,
+                        Gst.SeekFlags.FLUSH,
                         s.position)
                 else:
                     s.pipeline.seek(
-                        1.0, s.time_format, gst.SEEK_FLAG_FLUSH,
-                        gst.SEEK_TYPE_SET, s.position, 
-                        gst.SEEK_TYPE_SET, stop_time)
+                        1.0, s.time_format, Gst.SeekFlags.FLUSH,
+                        Gst.SeekType.SET, s.position, 
+                        Gst.SeekType.SET, stop_time)
             else:
                 s.pipeline.seek_simple(s.time_format, 
-                    gst.SEEK_FLAG_FLUSH,
+                    Gst.SeekFlags.FLUSH,
                     s.position)
             s.position = None
                 
@@ -1169,45 +1205,46 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
             if stop_time != None:
                 if is_HTTP or 1:
                     s.pipeline.seek_simple(s.time_format, 
-                        gst.SEEK_FLAG_FLUSH,
+                        Gst.SeekFlags.FLUSH,
                         start_time)
                 else:
-                        
                     s.pipeline.seek(
-                    1.0, s.time_format, gst.SEEK_FLAG_FLUSH,
-                    gst.SEEK_TYPE_SET, start_time, 
-                    gst.SEEK_TYPE_SET, stop_time)
+                    1.0, s.time_format, Gst.SeekFlags.FLUSH,
+                    Gst.SeekType.SET, start_time, 
+                    Gst.SeekType.SET, stop_time)
             else:
                 s.pipeline.seek_simple(s.time_format, 
-                    gst.SEEK_FLAG_FLUSH,
+                    Gst.SeekFlags.FLUSH,
                     start_time)
         #play
-        s.set_state(gst.STATE_PLAYING)
+        s.set_state(Gst.State.PLAYING)
+
     def on_next_track(s, track):
         pass
 
     def get_current_ns(s):
         try:
-            pos = s.pipeline.query_position(s.time_format, None)[0]
+            pos = s.pipeline.query_position(s.time_format)[1]
         except:
             pos = None
         return pos
     
     def prev(s):
         try:
-            s.pipeline.set_state(STATE_NULL);
+            s.pipeline.set_state(Gst.State.NULL);
             s.cursor.prev_track()
         except:
             pass
     def next(s):
         try:
             workers.add_immediate_task(s.reset_xtheader_task, [])
-            s.pipeline.set_state(STATE_NULL);
+            s.pipeline.set_state(Gst.State.NULL);
             lastfm.stop()
             s.cursor.next_track()
             s.playlist.play_next()
         except:
             pass
+
     def reset_xtheader_task(s):
         if s.gui != None:
             s.gui.reset_xtheader()
@@ -1234,7 +1271,7 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
             return
 
         try:
-            is_state_playing = s.pipeline.get_state()[1] == gst.STATE_PLAYING
+            is_state_playing = s.pipeline.get_state(Gst.State.NULL)[1] == Gst.State.PLAYING
         except:
             pass
         else:
@@ -1359,6 +1396,7 @@ NEXT=2
 class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
     is_crossfade = True
     life = threading.Event()
+    gui = None
     def __init__(s, no):
         s.players_sem = threading.Semaphore(1)
         s.players = [ BasicPlayer(no, s), BasicPlayer(no+1, s), BasicPlayer(no+2, s) ]
@@ -1393,7 +1431,7 @@ class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
     def crossfade(s, p = True):
         lastfm.stop()
         s.flock()
-        if s.players[PREV].get_state() != STATE_NULL:
+        if s.players[PREV].get_state() != Gst.State.NULL:
             s.players[PREV].stop()
         s.plock()
         s.players = [ s.players[CUR], s.players[NEXT], s.players[PREV] ]
@@ -1401,7 +1439,7 @@ class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
         s.fade_counter += 1
 
         tm = time.time()
-        if s.players[PREV].get_state() == STATE_PLAYING:
+        if s.players[PREV].get_state() == Gst.State.PLAYING:
             s.start_time = s.players[PREV].get_current_ns()
             s.stop_time = s.start_time + config.audio_player['crossfade_time']*1000000000
             try:
@@ -1413,7 +1451,7 @@ class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
             s.start_time = None
             s.stop_time = None
 
-        if s.players[CUR].get_state() == STATE_PAUSED:
+        if s.players[CUR].get_state() == Gst.State.PAUSED:
             if s.start_time != None:
                 s.players[CUR].set_vol(0.0)
             else:
@@ -1425,7 +1463,7 @@ class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
                 s.players[CUR].eq.Load ( config.GetEqualizer(s.players[CUR].track) )
                 
 
-            s.players[CUR].play()
+            s.players[CUR].playpause()
         else:
             pass
 
@@ -1465,7 +1503,7 @@ class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
             s.flock()
 
             prev_time = s.players[CUR].get_current_ns()
-            if prev_counter == s.fade_counter and s.players[CUR].get_state() == STATE_PLAYING:
+            if prev_counter == s.fade_counter and s.players[CUR].get_state() == Gst.State.PLAYING:
                 if s.players[CUR].duration <= 0:
                     s.funlock()
                     try:
@@ -1508,7 +1546,7 @@ class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
                     continue
 
                 pp = (difftime/config.audio_player['crossfade_time'])/1000000000.
-                if s.players[PREV].get_state() == STATE_PLAYING:
+                if s.players[PREV].get_state() == Gst.State.PLAYING:
                     s.players[PREV].set_vol(1 - pp )
                     s.players[CUR].set_vol(pp)
             else:
@@ -1526,7 +1564,7 @@ class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
     def update_time_task(s):
         if s.life.is_set():
             return
-        if s.players[CUR].get_state() != STATE_PLAYING:
+        if s.players[CUR].get_state() != Gst.State.PLAYING:
             return
         pos = s.players[CUR].get_current_ns()
         if s.gui != None:
@@ -1711,3 +1749,29 @@ class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
     def get_current_track(s):
         return s.track
 
+if __name__ == "__main__":
+    from thread_system.task_workers import TaskWorkers
+    config.Load()
+    config.LoadEqualizers()
+    workers = TaskWorkers(3)
+    Initialize(workers)
+    #bs = BasicPlayer(1)
+    #bs = AudioPlayer()
+    bs = AudioCrossFadePlayer(1)
+    track={}
+    track["addr"]="/home/hippy/love/lossless/Donovan/2004 - Beat Cafe/01-Donovan-Love_Floats.flac"
+    track["file"]=track["addr"]
+    track["begin"]="1:10.2"
+    track["end"]="1:23.2"
+    def test_player():
+        #bs.add_playing_task()
+        bs.play_track(track)
+        track['addr']="/home/hippy/love/lossless/Donovan/2004 - Beat Cafe/02-Donovan-Poormans_Sunshine.flac"
+        track["file"]=track["addr"]
+        track["begin"]="0:30.0"
+        time.sleep(8)
+        bs.play_track(track)
+    thr = Thread(target=test_player)
+    thr.start()
+    loop = GObject.MainLoop()
+    loop.run()

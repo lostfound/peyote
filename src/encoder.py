@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 #
-# Copyright (C) 2010-2011  Platon Peacel☮ve <platonny@ngs.ru>
+# Copyright (C) 2010-2017  Platon Peacel☮ve <platonny@ngs.ru>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,14 +24,15 @@ from mutagen.oggflac import OggFLAC
 from mutagen.oggvorbis import OggVorbis
 from mutagen.wavpack import WavPack
 import sys, os, thread, time, threading
-import pygst
-#pygst.require("0.10")
-import gst, time
+import time
 from threading import Semaphore, Thread, Event
 import cue
 import pickle
 from useful import quote_http, quote
 from sets import config, EncoderProfile, get_performer_alias, get_album_alias
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst, GObject
 from equalizer import *
 
 
@@ -65,7 +66,7 @@ class GstPipelineHelper:
     def __init__(s):
         s.reset()
     def reset(s):
-        s.time_format = gst.Format(gst.FORMAT_TIME)
+        s.time_format = gst.Format.TIME
         s.state = None
         s.eof = False
         s.sem = Semaphore(0)
@@ -81,7 +82,7 @@ class GstPipelineHelper:
         t = message.type
         src = message.src.get_name()
 
-        if t == gst.MESSAGE_STATE_CHANGED and s.state != None:
+        if t == Gst.MessageType.STATE_CHANGED and s.state != None:
             if src == s.pipeline_name:
                 os = None
                 ns = None
@@ -90,11 +91,11 @@ class GstPipelineHelper:
                 if ns == s.state:
                     s.state = None
                     s.sem.release()
-        elif t == gst.MESSAGE_EOS and src == s.pipeline_name:
+        elif t == Gst.MessageType.EOS and src == s.pipeline_name:
             s.eof = True
             s.sem.release()
             s.the_end.set()
-        elif t == gst.MESSAGE_ERROR:
+        elif t == Gst.MessageType.ERROR:
             s.error = True
             err, s.error_desc = message.parse_error()
             s.sem.release()
@@ -113,7 +114,7 @@ class GstPipelineHelper:
     
     def get_dur_time(s):
         try:
-            pos = s.pipeline.query_position(s.time_format, None)[0]
+            pos = s.pipeline.query_position(s.time_format)[1]
             if s.start_time != None:
                 pos -= s.start_time
             if s.duration != None:
@@ -150,10 +151,10 @@ class Decoder(GstPipelineHelper):
     def __init__(s):
         s.dest_file = os.tempnam("/tmp","peyenc")
 
-        s.pipeline = gst.element_factory_make("playbin")
+        s.pipeline = Gst.ElementFactory.make("playbin")
 
-        fakesink = gst.element_factory_make("fakesink")
-        filesink = gst.element_factory_make("filesink")
+        fakesink = Gst.ElementFactory.make("fakesink")
+        filesink = Gst.ElementFactory.make("filesink")
         filesink.set_property("location", s.dest_file)
         s.sink = filesink
 
@@ -167,11 +168,11 @@ class Decoder(GstPipelineHelper):
 
     def decode(s, source, start_time=None, stop_time=None):
         s.reset()
-        if not s.pipeline.set_state(gst.STATE_NULL):
+        if not s.pipeline.set_state(Gst.State.NULL):
             return False
         s.pipeline.set_property("uri",  source)
-        if not s.set_state(gst.STATE_PAUSED):
-            s.pipeline.set_state( gst.STATE_NULL )
+        if not s.set_state(Gst.State.PAUSED):
+            s.pipeline.set_state( Gst.State.NULL )
             return False
 
         s.caps = s.sink.get_pad("sink").get_negotiated_caps()
@@ -181,27 +182,27 @@ class Decoder(GstPipelineHelper):
         if start_time != None:
             if stop_time:
                 rc = s.pipeline.seek(
-                1.0, s.time_format, gst.SEEK_FLAG_FLUSH ,
-                gst.SEEK_TYPE_SET, start_time, 
-                gst.SEEK_TYPE_SET, stop_time)
+                1.0, s.time_format, Gst.SeekFlags.FLUSH ,
+                Gst.SeekType.SET, start_time, 
+                Gst.SeekType.SET, stop_time)
                 s.duration = stop_time - start_time 
             else:
                 s.pipeline.seek_simple(s.time_format, 
-                    gst.SEEK_FLAG_FLUSH,
+                    Gst.SeekFlags.FLUSH,
                     start_time)
                 try:
-                    s.duration = s.pipeline.query_duration(s.time_format, None)[0] - start_time 
+                    s.duration = s.pipeline.query_duration(s.time_format)[1] - start_time 
                 except:
                     pass
         else:
             try:
-                s.duration = s.pipeline.query_duration(s.time_format, None)[0]
+                s.duration = s.pipeline.query_duration(s.time_format)[1]
             except:
                 pass
 
 
-        if not s.set_state(gst.STATE_PLAYING):
-            s.pipeline.set_state( gst.STATE_NULL )
+        if not s.set_state(Gst.State.PLAYING):
+            s.pipeline.set_state( Gst.State.NULL )
             return False
         return True
                 
@@ -224,45 +225,45 @@ class AudioEncoder(GstPipelineHelper):
         s.profile.Load(profile.Save())
 
 
-        s.pipeline = gst.Pipeline()
+        s.pipeline = Gst.Pipeline()
         elements = []
 
-        s.filesrc = gst.element_factory_make("filesrc")
+        s.filesrc = Gst.ElementFactory.make("filesrc")
         s.filesrc.set_property("location", s.decoder.dest_file )
         elements.append(s.filesrc)
 
-        s.capsfilter = gst.element_factory_make("capsfilter")
+        s.capsfilter = Gst.ElementFactory.make("capsfilter")
         elements.append(s.capsfilter)
 
         for fname, status, params in s.profile.filters:
             if not status:
                 continue
             try:
-                af = gst.element_factory_make ( fname )
+                af = Gst.ElementFactory.make ( fname )
                 for p,v in params:
                     af.set_property(p, v)
             except:
                 continue
-            elements.append ( gst.element_factory_make("audioconvert") )
+            elements.append ( Gst.ElementFactory.make("audioconvert") )
             elements.append ( af )
 
-        s.audioconvert = gst.element_factory_make("audioconvert")
+        s.audioconvert = Gst.ElementFactory.make("audioconvert")
         elements.append(s.audioconvert)
 
-        enc = gst.element_factory_make( s.profile.encoder )
+        enc = Gst.ElementFactory.make( s.profile.encoder )
         elements.append(enc)
 
         for o,v in s.profile.encoder_opts:
             enc.set_property(o, v)
 
         if profile.muxer:
-            muxer = gst.element_factory_make(s.profile.muxer)
+            muxer = Gst.ElementFactory.make(s.profile.muxer)
             elements.append(muxer)
             
             for o,v in s.profile.muxer_opts:
                 muxer.set_property(o, v)
 
-        s.filesink = gst.element_factory_make("filesink")
+        s.filesink = Gst.ElementFactory.make("filesink")
         elements.append(s.filesink)
 
         s.pipeline.add(*elements)
@@ -278,7 +279,7 @@ class AudioEncoder(GstPipelineHelper):
 
     
     def prepare_track(s, track, pwd):
-        s.pipeline.set_state(gst.STATE_NULL)
+        s.pipeline.set_state(Gst.State.NULL)
         src_file = track.get('file')
         if src_file:
             s.URI = 'file://' + quote(src_file)
@@ -318,26 +319,26 @@ class AudioEncoder(GstPipelineHelper):
 
     def encode(s):
         s.reset()
-        if not s.pipeline.set_state(gst.STATE_NULL):
+        if not s.pipeline.set_state(Gst.State.NULL):
             return False
         s.capsfilter.set_property('caps', s.decoder.caps)
 
-        if not s.set_state(gst.STATE_PAUSED):
-            s.pipeline.set_state( gst.STATE_NULL )
+        if not s.set_state(Gst.State.PAUSED):
+            s.pipeline.set_state( Gst.State.NULL )
             return False
 
-        if not s.set_state(gst.STATE_PLAYING):
-            s.pipeline.set_state( gst.STATE_NULL )
+        if not s.set_state(Gst.State.PLAYING):
+            s.pipeline.set_state( Gst.State.NULL )
             return False
 
         s.duration = s.decoder.duration
         return True
 
     def to_null(s):
-        s.pipeline.set_state(gst.STATE_NULL)
+        s.pipeline.set_state(Gst.State.NULL)
 
     def finalize(s):
-        s.pipeline.set_state(gst.STATE_NULL)
+        s.pipeline.set_state(Gst.State.NULL)
 
         if s.profile.tag_type == 'flac':
             tag = FLAC(s.dest)

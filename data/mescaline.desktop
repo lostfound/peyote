@@ -1,6 +1,6 @@
 [Desktop Entry]
 Version=0.9.11
-Exec=/usr/bin/python2 /usr/lib/peyote/mescaline.py %F
+Exec=/usr/bin/python /usr/local/lib/peyote/mescaline.py %F
 Name=Play in Peyote
 Comment=An audio player
 Name[ru]=Играть в Пейоте

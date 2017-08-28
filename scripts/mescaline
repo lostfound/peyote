@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/python2 /usr/lib/peyote/mescaline.py $@
+/usr/bin/python /usr/local/lib/peyote/mescaline.py $@

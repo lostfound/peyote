@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 #
-# Copyright (C) 2010-2011  Platon Peacel☮ve <platonny@ngs.ru>
+# Copyright (C) 2010-2017  Platon Peacel☮ve <platonny@ngs.ru>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,12 +18,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os,sys
-import gst
+#import gst
 from threading import Event
 import time
-import gobject
-from libpygsthack import child_proxy_get_child_by_index
-
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst, GObject
+child_proxy_get_child_by_index = Gst.ChildProxy.get_child_by_index
 
 
 class Band:
@@ -71,8 +72,8 @@ LOWEST_FREQ = 20.0
 HIGHEST_FREQ = 20000.0
 class Equalizer():
     def __init__(s, num_bands = 33):
-        s.eq = gst.element_factory_make('equalizer-nbands')
-        s.eqr = gst.element_factory_make('equalizer-nbands')
+        s.eq = Gst.ElementFactory.make('equalizer-nbands')
+        s.eqr = Gst.ElementFactory.make('equalizer-nbands')
         s.generate_bands(num_bands)
     
     def __len__(s):

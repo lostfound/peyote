@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 #
-# Copyright (C) 2010-2011  Platon Peacel☮ve <platonny@ngs.ru>
+# Copyright (C) 2010-2017  Platon Peacel☮ve <platonny@ngs.ru>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,13 +17,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import gi
+gi.require_version('Gst', '1.0')
+from gi.repository import Gst, GObject
+
+from gi.repository import GObject
+list_properties = GObject.list_properties
 from subprocess import Popen, PIPE
 from useful import unicode2, is_track, localise
 from sorts import sorted2
 import gettext, os
-import gst,shlex
+import shlex
 from sets import config, EncoderProfile, SongPrinter
-from gobject import list_properties
 from curses import COLOR_WHITE
 from player import lastfm
 from vk import GET_TOKEN
@@ -695,7 +700,7 @@ def _str_to_property(plugin_name, prop_str):
 
 def _get_any_property(plugin_name, used_props):
     try:
-        plug = gst.element_factory_make( plugin_name )
+        plug = Gst.ElementFactory.make( plugin_name )
     except:
         return "name=value"
     propts = map(lambda p: [p.name, p.default_value], list( list_properties( plug ) ) )
@@ -2592,15 +2597,15 @@ _icons = [ u'☺', u'⚖', u'☠' ]
 
 def _test_gst_sink(audio_sink):
     try:
-        asink = gst.element_factory_make( audio_sink )
-    except:
+        asink = Gst.ElementFactory.make( audio_sink )
+    except Exception,e:
         return False
     del asink
     return True
 
 def _test_gst_mixer(mixer_name):
     try:
-        mx = gst.element_factory_make( mixer_name )
+        mx = Gst.ElementFactory.make( mixer_name )
         dir ( mx.list_tracks )
     except:
         return False
@@ -2609,7 +2614,7 @@ def _test_gst_mixer(mixer_name):
 
 def _test_gst_sink_param(audio_sink, param, value_str):
     try:
-        asink = gst.element_factory_make( audio_sink )
+        asink = Gst.ElementFactory.make( audio_sink )
     except:
         return None
     value = None
