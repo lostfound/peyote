@@ -152,7 +152,7 @@ class Panel:
 
 	def run_yesno(s, title, question, ansvers):
 		s.yesno = Question(s.colors, title, question, ansvers)
-		s.yesno.gen_wins(s.win)
+                s.yesno.gen_wins(s.win)
 		s.engine.question = True
 		return 
 		

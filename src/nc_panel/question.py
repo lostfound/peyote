@@ -280,8 +280,7 @@ class Question:
 			s.win = parent.derwin( *winargs )
 			s.win.keypad(True)
 			s.win.erase()
-		except:
-			pass
+		except Exception, e: pass
 		curses_unlock()
 
 		for ln in s.inputs:

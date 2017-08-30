@@ -30,7 +30,7 @@ import shutil, stat, httplib, signal
 from panel_locations import PLocations
 from thread_system.thread_polls import polls
 import player
-from encoder import AudioEncoder
+from encoder import ReEncoder
 from sets import config
 
 exists = fs.auto.exists
@@ -284,7 +284,7 @@ class PFS:
                 rc -= 1
                 profile = config.encoder_profiles[config.encoder_profiles.keys()[rc]]
                 try:
-                    s.encoder = AudioEncoder(profile)
+                    s.encoder = ReEncoder(profile)
                 except Exception, e:
                     s.panel.run_yesno(_(u" error "), [_("Can't initialize encoder!"), repr(e), ""], [_(u"<Let It Be>")])
                     s.question = True
@@ -1304,8 +1304,8 @@ class PThread:
                         s.panel.progress.print_n(0)
                         s.panel.progress.refresh()
 
-                        if not s.encoder.prepare_track(elm, s.location):
-                            s.panel.run_yesno(_(u" error "), [_(u"Error:") ] + s.encoder.get_splited_error(s.width - 5) + [ ""], 
+                        if not s.encoder.process(elm, s.location):
+                            s.panel.run_yesno(_(u" error "), [_(u"Error:") ] + s.encoder.get_splited_error(s.width - 8) + [ ""], 
                                 [_(u"<Abort>"), _("<Repeat>"), _("<Skip>")])
                             s._threaderr()
 
@@ -1317,60 +1317,15 @@ class PThread:
                             s.panel.refresh()
                             if rc == 0:
                                 abort = True
+                                break
                             elif rc == 1:
                                 repeat = True
                                 continue
                             else:
                                 continue
-
-                        if not s.encoder.decode():
-                            s.panel.run_yesno(_(u" error "), [_(u"Error:") ] +  s.encoder.decoder.get_splited_error(s.width - 5) + [ ""],
-                                [_(u"<Abort>"), _("<Repeat>"), _("<Skip>")])
-                            s._threaderr()
-
-                            rc = s.panel.yesno.enter()
-                            del s.panel.yesno
-                            s.panel.yesno = None
-                            s.question = False
-                            s.panel.redraw()
-                            s.panel.refresh()
-                            if rc == 0:
-                                abort = True
-                            elif rc == 1:
-                                repeat = True
-                                continue
-                            else:
-                                continue
-                            
-
-                        s.encoder.decoder.wff( .2, s._encode_progress )
-                        if not s.encoder.encode():
-                            s.panel.run_yesno(_(u" error "), [_(u"Error:")] +  s.encoder.get_splited_error(s.width - 5) + [ ""],
-                                [_(u"<Abort>"), _("<Repeat>"), _("<Skip>")])
-                            s._threaderr()
-
-                            rc = s.panel.yesno.enter()
-                            del s.panel.yesno
-                            s.panel.yesno = None
-                            s.question = False
-                            s.panel.redraw()
-                            s.panel.refresh()
-                            if rc == 0:
-                                abort = True
-                            elif rc == 1:
-                                repeat = True
-                                continue
-                            else:
-                                continue
-                            continue
 
                         s.encoder.wff( .2, s._encode_progress )
                         s.encoder.to_null()
-                        try:
-                            s.encoder.finalize()
-                        except Exception,e:
-                            pass
-                            
                         s.panel.progress.update_progress(1, 1)
                         continue
 

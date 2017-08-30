@@ -1156,6 +1156,7 @@ class EncoderEncoderNameOption(Option):
     def set_param(s, param):
         profile = s._get_encoder_profile()
         value = unicode2(param)
+        return False
         if _test_gst_sink(value):
             profile.encoder = value
             profile.encoder_opts = []
@@ -2601,6 +2602,7 @@ def _test_gst_sink(audio_sink):
         asink = Gst.ElementFactory.make( audio_sink )
     except Exception,e:
         return False
+    if not asink: return False
     del asink
     return True
 
@@ -2610,6 +2612,7 @@ def _test_gst_mixer(mixer_name):
         dir ( mx.list_tracks )
     except:
         return False
+    if not mx: return False
     del mx
     return True
 
@@ -2618,6 +2621,7 @@ def _test_gst_sink_param(audio_sink, param, value_str):
         asink = Gst.ElementFactory.make( audio_sink )
     except:
         return None
+    if not asink: return None
     value = None
     if value_str.lower() in ['true', 'false']:
         vtype = bool
