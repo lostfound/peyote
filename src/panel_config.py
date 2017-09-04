@@ -1156,7 +1156,6 @@ class EncoderEncoderNameOption(Option):
     def set_param(s, param):
         profile = s._get_encoder_profile()
         value = unicode2(param)
-        return False
         if _test_gst_sink(value):
             profile.encoder = value
             profile.encoder_opts = []

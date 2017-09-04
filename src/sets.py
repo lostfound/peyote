@@ -26,7 +26,7 @@ from getopt import getopt, GetoptError
 from gettext import lgettext
 import random
 import shutil
-VERSION = [ 0, 9, 12, 1 ]
+VERSION = [ 0, 10, 0 ]
 
 from useful import localise, nullreplace
 _ = localise
@@ -724,6 +724,17 @@ class Settings(Cmd, EqualizerSettings, Cheats, Skulls, Directories, Notification
             enc['filters'] = []
             enc['path'] = u"%$artist%/%$date - %%$album%/%track $n - %$title.mp3"
             enc['tag'] = 'id3'
+            profile = EncoderProfile()
+            profile.Load(enc)
+            s.encoder_profiles[profile.name] = profile
+            enc['name'] =u"oggvorbis"
+            enc['encoder_name'] = u"vorvisenc"
+            enc['encoder_args'] = [ ('quality', 0.7) ]
+            enc['muxer_name'] = u"oggmux"
+            enc['muxer_args'] = []
+            enc['filters'] = []
+            enc['path'] = u"%$artist%/%$date - %%$album%/%track $n - %$title.oga"
+            enc['tag'] = 'oggvorbis'
             profile = EncoderProfile()
             profile.Load(enc)
             s.encoder_profiles[profile.name] = profile
