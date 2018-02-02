@@ -605,8 +605,6 @@ UPDATE_MENUS
 UPDATE_DESKTOP_DATABASE
 gstreamer_LIBS
 gstreamer_CFLAGS
-pygobject_LIBS
-pygobject_CFLAGS
 PKG_CONFIG_LIBDIR
 PKG_CONFIG_PATH
 PKG_CONFIG
@@ -700,8 +698,6 @@ PYTHON
 PKG_CONFIG
 PKG_CONFIG_PATH
 PKG_CONFIG_LIBDIR
-pygobject_CFLAGS
-pygobject_LIBS
 gstreamer_CFLAGS
 gstreamer_LIBS'
 
@@ -1336,10 +1332,6 @@ Some influential environment variables:
               directories to add to pkg-config's search path
   PKG_CONFIG_LIBDIR
               path overriding pkg-config's built-in search path
-  pygobject_CFLAGS
-              C compiler flags for pygobject, overriding pkg-config
-  pygobject_LIBS
-              linker flags for pygobject, overriding pkg-config
   gstreamer_CFLAGS
               C compiler flags for gstreamer, overriding pkg-config
   gstreamer_LIBS
@@ -2716,6 +2708,7 @@ fi
 if ! $PYTHON scripts/check_python_modules.py "$gstplugins"; then
 	as_fn_error $? "Shit happens" "$LINENO" 5
 fi
+#PKG_CHECK_MODULES([pygobject], [pygobject-2.0])
 
 
 
@@ -2838,97 +2831,6 @@ $as_echo "no" >&6; }
 fi
 
 pkg_failed=no
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for pygobject" >&5
-$as_echo_n "checking for pygobject... " >&6; }
-
-if test -n "$pygobject_CFLAGS"; then
-    pkg_cv_pygobject_CFLAGS="$pygobject_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"pygobject-2.0\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "pygobject-2.0") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  pkg_cv_pygobject_CFLAGS=`$PKG_CONFIG --cflags "pygobject-2.0" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$pygobject_LIBS"; then
-    pkg_cv_pygobject_LIBS="$pygobject_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"pygobject-2.0\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "pygobject-2.0") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  pkg_cv_pygobject_LIBS=`$PKG_CONFIG --libs "pygobject-2.0" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        pygobject_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "pygobject-2.0" 2>&1`
-        else
-	        pygobject_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "pygobject-2.0" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$pygobject_PKG_ERRORS" >&5
-
-	as_fn_error $? "Package requirements (pygobject-2.0) were not met:
-
-$pygobject_PKG_ERRORS
-
-Consider adjusting the PKG_CONFIG_PATH environment variable if you
-installed software in a non-standard prefix.
-
-Alternatively, you may set the environment variables pygobject_CFLAGS
-and pygobject_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details." "$LINENO" 5
-elif test $pkg_failed = untried; then
-     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
-is in your PATH or set the PKG_CONFIG environment variable to the full
-path to pkg-config.
-
-Alternatively, you may set the environment variables pygobject_CFLAGS
-and pygobject_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.
-See \`config.log' for more details" "$LINENO" 5; }
-else
-	pygobject_CFLAGS=$pkg_cv_pygobject_CFLAGS
-	pygobject_LIBS=$pkg_cv_pygobject_LIBS
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-
-fi
-
-pkg_failed=no
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for gstreamer" >&5
 $as_echo_n "checking for gstreamer... " >&6; }
 
@@ -2936,12 +2838,12 @@ if test -n "$gstreamer_CFLAGS"; then
     pkg_cv_gstreamer_CFLAGS="$gstreamer_CFLAGS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-0.10\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gstreamer-0.10") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-1.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gstreamer-1.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_gstreamer_CFLAGS=`$PKG_CONFIG --cflags "gstreamer-0.10" 2>/dev/null`
+  pkg_cv_gstreamer_CFLAGS=`$PKG_CONFIG --cflags "gstreamer-1.0" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -2953,12 +2855,12 @@ if test -n "$gstreamer_LIBS"; then
     pkg_cv_gstreamer_LIBS="$gstreamer_LIBS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-0.10\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gstreamer-0.10") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-1.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gstreamer-1.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_gstreamer_LIBS=`$PKG_CONFIG --libs "gstreamer-0.10" 2>/dev/null`
+  pkg_cv_gstreamer_LIBS=`$PKG_CONFIG --libs "gstreamer-1.0" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -2979,14 +2881,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        gstreamer_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "gstreamer-0.10" 2>&1`
+	        gstreamer_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "gstreamer-1.0" 2>&1`
         else
-	        gstreamer_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gstreamer-0.10" 2>&1`
+	        gstreamer_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gstreamer-1.0" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$gstreamer_PKG_ERRORS" >&5
 
-	as_fn_error $? "Package requirements (gstreamer-0.10) were not met:
+	as_fn_error $? "Package requirements (gstreamer-1.0) were not met:
 
 $gstreamer_PKG_ERRORS
 
