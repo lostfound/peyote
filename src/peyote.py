@@ -498,11 +498,11 @@ def main(*args):
         try:
             session = open(config.session_file, 'r')
             firstline = session.readline().rstrip()
-            if firstline.count('.') > 2:
+            if firstline.count('.') >= 2:
                 version = map(lambda x: int(x), firstline.split('.'))
                 nop_str = session.readline().rstrip()
             else:
-                version = [0, 9, 12]
+                version = [0, 10, 0]
                 nop_str = firstline
 
             nop = int(nop_str)
@@ -534,7 +534,10 @@ def main(*args):
                 n = ntrack['panel_id']
                 panels[n].set_next_track(player_cursor, ntrack['addr'])
             session.close()
-        except: #Incorrect session file
+        except Exception,e: #Incorrect session file
+            #import debug
+            #debug.debug(e)
+            #debug.trace()
             opm = False
             if session:
                 session.close()

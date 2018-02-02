@@ -40,6 +40,7 @@ class PlayerCursesGUI:
         s.genwin()
 
         s.x11 = True if os.getenv('DISPLAY') else False
+        s.x11 = False
 
         s.reset_xtheader()
 
