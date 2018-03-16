@@ -71,7 +71,7 @@ if ! $PYTHON scripts/check_python_modules.py "$gstplugins"; then
 	AC_MSG_ERROR(Shit happens)
 fi
 #PKG_CHECK_MODULES([pygobject], [pygobject-2.0])
-PKG_CHECK_MODULES([gstreamer], [gstreamer-1.0])
+#PKG_CHECK_MODULES([gstreamer], [gstreamer-1.0])
 
 AC_CHECK_PROGS([UPDATE_DESKTOP_DATABASE],[update-desktop-database],:)
 AC_CHECK_PROGS([UPDATE_MENUS],[update-menus],:)
