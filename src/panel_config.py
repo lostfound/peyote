@@ -1353,8 +1353,29 @@ class MixerMenu(Menu):
     def children (s):
         cldrn = []
         #return [  MixerOption(s), MixerPropsMenu(s), MixerCurrentMixerOption(s) ]
-        return [  MixerCurrentMixerOption(s) ]
+        return [  MixerCurrentCardOption(s), MixerCurrentMixerOption(s) ]
 
+class MixerCurrentCardOption( Option ):
+    def __init__(s, p):
+        s.p = p
+        Option.__init__(s, None, 1 )
+        s.ep = EP_SELECT
+    def get_name(s):
+        return s.p.callback.get_card_name()
+
+    def get_value(s):
+        return ''
+    
+    def get_yesno(s):
+        cards = s.p.callback.cards()
+        if cards and cards != []:
+            s.cards = cards
+            return [ _('mixer'), [_('select card'), "" ], map ( lambda m: u'<%s>' % (m[1]), s.p.callback.cards() ) ]
+    
+    def answer(s, rc):
+        config.mixer['card_no'] = s.cards[rc][0]
+        config.Save()
+        s.p.callback.restart_mixer()
 class MixerCurrentMixerOption( Option ):
     def __init__(s, p):
         s.p = p
@@ -1375,6 +1396,7 @@ class MixerCurrentMixerOption( Option ):
     def answer(s, rc):
         config.mixer['track_no'] = s.mixers[rc][0]
         config.Save()
+        s.p.callback.restart_mixer()
 
     
 class MixerOption( Option ):

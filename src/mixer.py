@@ -33,12 +33,20 @@ class Mixer:
 
     def restart(s):
         try:
-            s.mixer = alsaaudio.Mixer( alsaaudio.mixers()[config.mixer[ 'track_no' ]])
+            s.mixer = alsaaudio.Mixer( alsaaudio.mixers(s.get_card_no())[config.mixer[ 'track_no' ]], cardindex=s.get_card_no())
         except: s.mixer =None
+
+    def get_card_no(s):
+        return config.mixer['card_no']
+
+    def get_card_name(s):
+        try:
+            return alsaaudio.cards()[s.get_card_no()]
+        except: ""
 
     def get_labels(s):
         try:
-            return map(lambda n: (n[0], n[1]),  enumerate ( alsaaudio.mixers() ) )
+            return map(lambda n: (n[0], n[1]),  enumerate ( alsaaudio.mixers(s.get_card_no()) ) )
         except:
             return []
 
@@ -46,9 +54,18 @@ class Mixer:
         try:
             if no == None:
                 no = config.mixer [ 'track_no' ]
-            return unicode2 ( alsaaudio.mixers()[no] )
+            return unicode2 ( alsaaudio.mixers(s.get_card_no())[no] )
         except:
             return 'None'
+    
+    def get_cards(s):
+        try:
+            ret = []
+            for i,name in enumerate( alsaaudio.cards() ):
+                ret.append((i, name))
+            return ret
+        except:
+            return []
     
     def _trpv(s):
         no = config.mixer [ 'track_no' ]
@@ -88,13 +105,16 @@ if __name__ == '__main__':
     class Co:
         def __init__(s):
             s.mixer = {}
-            s.mixer [ 'plugin' ] = 'oss4mixer'
-            s.mixer [ 'properties' ] = [ ( 'device', '/dev/mixer0' ) ]
+            #s.mixer [ 'plugin' ] = 'oss4mixer'
+            #s.mixer [ 'properties' ] = [ ( 'device', '/dev/mixer0' ) ]
             s.mixer [ 'track_no' ] = 0
+            s.mixer [ 'card_no' ] = 0
     config = Co()
                     
     mix = Mixer()
     mix.restart()
+    print mix.get_card_name()
+    print mix.get_cards()
     print mix.get_labels()
     print mix.get_label()
     print mix.get_volume_pp()

@@ -697,7 +697,11 @@ class Settings(Cmd, EqualizerSettings, Cheats, Skulls, Directories, Notification
             s.mixer [ 'plugin' ] = 'alsamixer'
             s.mixer [ 'properties' ] = [ ]
             s.mixer [ 'track_no' ] = 0
+            s.mixer [ 'card_no' ] = 0
             s.mixer [ 'step' ] = 1.0
+            ret = False
+        if s.mixer.get('card_no', None) == None:
+            s.mixer['card_no'] = 0
             ret = False
 
         if s.shoutcast_RpP == None:

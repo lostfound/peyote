@@ -342,6 +342,12 @@ class Callback:
     def get_mixer_label(s):
         return mixer.get_label()
     
+    def get_card_name(s):
+        return mixer.get_card_name()
+
+    def cards(s):
+        return mixer.get_cards()
+
     def mixers(s):
         return mixer.get_labels()
     

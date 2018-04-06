@@ -1248,7 +1248,8 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
     
     def add_playing_task(s):
         s.prev_pos = -1
-        s.playing_task_delay = 0.3
+        s.stop_counter = 0
+        s.playing_task_delay = 0.2
         s.playing_task_counter = 0
         workers.add_immediate_task(s.playing_task, [])
 
@@ -1281,9 +1282,14 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
                         s.prev_pos = -1
                         s.next()
                     elif pos == s.prev_pos:
-                        s.prev_pos = -1
-                        s.next()
+                        if s.stop_counter >= 5:
+                            s.stop_counter=0
+                            s.prev_pos = -1
+                            s.next()
+                        else:
+                            s.stop_counter += 1
                     else:
+                        s.stop_counter = 0
                         s.prev_pos = pos
 
                 except:
