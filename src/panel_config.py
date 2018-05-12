@@ -1370,7 +1370,7 @@ class MixerCurrentCardOption( Option ):
         cards = s.p.callback.cards()
         if cards and cards != []:
             s.cards = cards
-            return [ _('mixer'), [_('select card'), "" ], map ( lambda m: u'<%s>' % (m[1]), s.p.callback.cards() ) ]
+            return [ _('mixer'), [_('please select a card'), "" ], map ( lambda m: u'<%s>' % (m[1]), s.p.callback.cards() ) ]
     
     def answer(s, rc):
         config.mixer['card_no'] = s.cards[rc][0]
@@ -1391,7 +1391,7 @@ class MixerCurrentMixerOption( Option ):
         mixers = s.p.callback.mixers()
         if mixers and mixers != []:
             s.mixers = mixers
-            return [ _('mixer'), [_('select mixer'), "" ], map ( lambda m: u'<%s>' % (m[1]), s.p.callback.mixers() ) ]
+            return [ _('mixer'), [_('please select a mixer'), "" ], map ( lambda m: u'<%s>' % (m[1]), s.p.callback.mixers() ) ]
     
     def answer(s, rc):
         config.mixer['track_no'] = s.mixers[rc][0]

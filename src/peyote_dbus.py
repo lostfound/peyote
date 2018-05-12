@@ -48,6 +48,8 @@ INC_PANEL_WIDTH = 0x16
 DEC_PANEL_WIDTH = 0x17
 PLAY          = 0x18
 CD_AND_PLAY  = 0x19
+RESUME       = 0x20
+PAUSE        = 0x21
 
 
 ARTIST       = 0x100
@@ -178,6 +180,12 @@ class PeyoteDbus(dbus.service.Object):
     @dbus.service.method(dbus_path, in_signature='', out_signature='')
     def Play(s):
         s.q.put( [PLAY] )
+    @dbus.service.method(dbus_path, in_signature='', out_signature='')
+    def Pause(s):
+        s.q.put( [PAUSE] )
+    @dbus.service.method(dbus_path, in_signature='', out_signature='')
+    def Resume(s):
+        s.q.put( [RESUME] )
     @dbus.service.method(dbus_path, in_signature='', out_signature='s')
     def GetArtist(s):
         task = [ARTIST]

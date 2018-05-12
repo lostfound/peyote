@@ -698,13 +698,20 @@ class BasicPlayer(CrossfadeParams, GstPipelineHelper2):
     def set_vol(s, volume):
         s.volume.set_property("volume", volume)
 
-    def play(s):
-        status = s.pipeline.get_state(Gst.State.NULL)[1]
-        if status == Gst.State.PAUSED:
-            s.set_state(Gst.State.PLAYING)
+    #def play(s):
+    #    status = s.pipeline.get_state(Gst.State.NULL)[1]
+    #    if status == Gst.State.PAUSED:
+    #        s.set_state(Gst.State.PLAYING)
     
     def get_equalizer(s):
         return s.eq
+
+    def pause(s):
+        if s.get_status() == "Playing":
+            s.playpause()
+    def play(s):
+        if s.get_status() != "Playing":
+            s.playpause()
 
     def playpause(s):
         if s.pipeline.get_state(Gst.State.NULL)[1] == Gst.State.PLAYING:
@@ -1016,6 +1023,14 @@ class AudioPlayer( PlayingOrders, Subscribers, GstPipelineHelper2 ):
             return "Paused"
         else:
             return "Stopped"
+
+    def pause(s):
+        if s.get_status() == "Playing":
+            s.playpause()
+
+    def play(s):
+        if s.get_status() != "Playing":
+            s.playpause()
 
     def playpause(s):
         if s.pipeline.get_state(Gst.State.NULL)[1] == Gst.State.PLAYING:
@@ -1648,6 +1663,14 @@ class AudioCrossFadePlayer ( PlayingOrders, Subscribers ):
         except:
             return "Stopped"
     
+    def pause(s):
+        if s.get_status() == "Playing":
+            s.playpause()
+
+    def play(s):
+        if s.get_status() != "Playing":
+            s.playpause()
+
     def playpause(s):
         s.flock()
         s.plock()

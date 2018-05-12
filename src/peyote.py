@@ -598,6 +598,10 @@ def main(*args):
             if command: #DBUS HANDLER
                 if command[0] == PLAYPAUSE:
                     ap.playpause()
+                elif command[0] == RESUME:
+                    ap.play()
+                elif command[0] == PAUSE:
+                    ap.pause()
                 elif command[0] == NEXTTRACK:
                     ap.next()
                 elif command[0] == TAB and not get_opm():

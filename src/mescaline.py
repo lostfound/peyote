@@ -23,7 +23,8 @@ dbus_path = "net.sourceforge.peyote"
 
 def usage():
     print "Usage: %s [--print-artist ] [ --print-album ] [--print-title] [--print-status]" % sys.argv[0]
-    print "       %s [ --playpayse ] [--next] [--new-panel location] [--cd location] [--tab] [--play] [--cd-and-play audiofile|location|playlist]" % (" "*len(sys.argv[0]) )
+    print "       %s [ --playpayse ] [--pause] [--resume] [--play]" % (" "*len(sys.argv[0]) )
+    print "       %s [--next] [--new-panel location] [--cd location] [--tab] [--cd-and-play audiofile|location|playlist]" % (" "*len(sys.argv[0]) )
     print "       %s directory|audio_file|cuefile" % sys.argv[0]
     print "       %s --help" % sys.argv[0]
 
@@ -38,7 +39,7 @@ def parse_commandline():
         #print "Run the peyote first!"
         sys.exit(0)
 
-    gopts = [ 'print-artist', 'print-album', 'print-title', 'playpause', 'next', 'print-status', 'new-panel=', 'cd=', 'tab', "play", "cd-and-play=" ]
+    gopts = [ 'print-artist', 'print-album', 'print-title', 'playpause', "pause", "resume", 'next', 'print-status', 'new-panel=', 'cd=', 'tab', "play", "cd-and-play=" ]
     try:
         optlist, args = getopt.getopt(sys.argv[1:], '', gopts)
     except getopt.GetoptError, err:
@@ -71,9 +72,12 @@ def parse_commandline():
             elif val == '--playpause':
                 remote_object = bus.get_object(dbus_path, "/Mescaline")
                 rc = remote_object.PlayPause(dbus_interface = dbus_path)
-            elif val == '--playpause':
+            elif val == '--pause':
                 remote_object = bus.get_object(dbus_path, "/Mescaline")
-                rc = remote_object.PlayPause(dbus_interface = dbus_path)
+                rc = remote_object.Pause(dbus_interface = dbus_path)
+            elif val == '--resume':
+                remote_object = bus.get_object(dbus_path, "/Mescaline")
+                rc = remote_object.Resume(dbus_interface = dbus_path)
 
             elif val == '--tab':
                 remote_object = bus.get_object(dbus_path, "/Mescaline")
